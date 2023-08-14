@@ -4,25 +4,25 @@ import { logContentState, logType, logTypeConstant, modalState } from "@/compone
 import * as S from "@/components/styled/Modal.styled";
 import { devInstance } from "@/api/axios";
 
-interface signUpDto {
-    email: string,
-    username: string,
-    password: string,
+interface channelCreateDto {
+    channelName: string,
+    chnnelDescription: string,
+    chnnelPassword: string,
 }
 
 const line = "__________________________________";
 
-const SignUpModal = () => {
+const ChannelCreateModal = () => {
     const [modalShow, setModalShow] = useRecoilState(modalState);
     const [logContent, setLogContent] = useRecoilState(logContentState);
-    const [email, setEmail] = useState('');
-    const [username, setUsername] = useState('');
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
     const [password, setPassword] = useState('');
 
     const closeModal = () => {
         setModalShow((state) => {
             const newState = { ...state };
-            newState.signUp = false;
+            newState.channelCreate = false;
             return newState;
         })
     }
@@ -35,16 +35,16 @@ const SignUpModal = () => {
         })
         logContentList.push({
             type: logTypeConstant.blue,
-            content: `${SignUpModal.name} 실행`,
+            content: `${ChannelCreateModal.name} 실행`,
         })
 
-        const signUpData: signUpDto = {
-            email: email,
-            username: username,
-            password: password
+        const channelCreateData: channelCreateDto = {
+            channelName: name,
+            chnnelDescription: description,
+            chnnelPassword: password
         }
         const formData = new FormData();
-        Object.entries(signUpData).map(([k, v]) => {
+        Object.entries(channelCreateData).map(([k, v]) => {
             formData.append(k, v);
         })
         logContentList.push({
@@ -52,12 +52,12 @@ const SignUpModal = () => {
             content: `${JSON.stringify(Object.fromEntries(formData))}`,
         })
 
-        await devInstance.post("/user/signup", formData)
+        await devInstance.post("/channel", formData)
             .then((res) => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.blue,
-                    content: `${SignUpModal.name} 결과`,
+                    content: `${ChannelCreateModal.name} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -69,7 +69,7 @@ const SignUpModal = () => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.red,
-                    content: `${SignUpModal.name} 결과`,
+                    content: `${ChannelCreateModal.name} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -86,25 +86,25 @@ const SignUpModal = () => {
     return (
         <>
             {
-                modalShow.signUp &&
+                modalShow.channelCreate &&
                 <S.Modal onClick={handleOverlayClick}>
                     <S.ModalContent onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}>
-                        <h2>User Registration</h2>
+                        <h2>Channel Registration</h2>
                         <S.ModalInput
                             type="text"
-                            placeholder="Email"
-                            value={email}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                            placeholder="channelName"
+                            value={name}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                         />
                         <S.ModalInput
                             type="text"
-                            placeholder="Username"
-                            value={username}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+                            placeholder="channelDescription"
+                            value={description}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDescription(e.target.value)}
                         />
                         <S.ModalInput
-                            type="password"
-                            placeholder="Password"
+                            type="text"
+                            placeholder="channelPassword"
                             value={password}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                         />
@@ -120,4 +120,4 @@ const SignUpModal = () => {
     )
 }
 
-export default SignUpModal;
+export default ChannelCreateModal;

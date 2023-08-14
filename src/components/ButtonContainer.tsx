@@ -1,19 +1,32 @@
 import * as S from "@/components/styled/ButtonContainer.styled";
 import * as SBtn from "@/components/styled/Btn.styled";
 import { useRecoilState } from "recoil";
-import { signUpModalState } from "./atom/ModalShow";
+import { modalKeyConstance, modalState } from "./atom/ModalShow";
 
 const ButtonContainer = () => {
-    const [show, setShow] = useRecoilState(signUpModalState);
+    const [modalShow, setModalShow] = useRecoilState(modalState);
+
+    const openModal = (modalName: string) => {
+        setModalShow((state) => {
+            const newState = { ...state };
+            newState[modalName] = true;
+            return newState;
+        })
+    }
 
     return (
         <S.ButtonContainer>
             <S.FlexBox>
-                {/* <SBtn.btnPushBG onClick={() => {
-                    setShow(true);
+                <SBtn.btnPushBG onClick={() => {
+                    openModal(modalKeyConstance.signUp);
                 }}>
                     Sign Up
-                </SBtn.btnPushBG> */}
+                </SBtn.btnPushBG>
+                <SBtn.btnPushBG onClick={() => {
+                    openModal(modalKeyConstance.login);
+                }}>
+                    Login
+                </SBtn.btnPushBG>
                 <SBtn.btnPushBG> 1 </SBtn.btnPushBG>
                 <SBtn.btnPushBG> 2 </SBtn.btnPushBG>
                 <SBtn.btnPushBG> 3 </SBtn.btnPushBG>
@@ -21,37 +34,42 @@ const ButtonContainer = () => {
                 <SBtn.btnPushBG> 5 </SBtn.btnPushBG>
                 <SBtn.btnPushBG> 6 </SBtn.btnPushBG>
                 <SBtn.btnPushBG> 7 </SBtn.btnPushBG>
-                <SBtn.btnPushBG> 8 </SBtn.btnPushBG>
-                <SBtn.btnPushBG> 9 </SBtn.btnPushBG>
-                <SBtn.btnPushBG> 10 </SBtn.btnPushBG>
-                <SBtn.btnPushBG> T </SBtn.btnPushBG>
-                <SBtn.btnPushBG> T </SBtn.btnPushBG>
-                <SBtn.btnPushBG> T </SBtn.btnPushBG>
-                <SBtn.btnPushBG> T </SBtn.btnPushBG>
-                <SBtn.btnPushBG> T </SBtn.btnPushBG>
-                <SBtn.btnPushBG> T </SBtn.btnPushBG>
-                <SBtn.btnPushBG> T </SBtn.btnPushBG>
-                <SBtn.btnPushBG> T </SBtn.btnPushBG>
-                <SBtn.btnPushBG> T </SBtn.btnPushBG>
-                <SBtn.btnPushBG> FF </SBtn.btnPushBG>
+                <SBtn.btnPushBG> F </SBtn.btnPushBG>
             </S.FlexBox>
             <S.FlexBox>
-                {/* <SBtn.btnPushBG onClick={() => {
-                    setShow(true);
+                <SBtn.btnPushBG onClick={() => {
+                    openModal(modalKeyConstance.channelCreate);
                 }}>
-                    Sign Up
-                </SBtn.btnPushBG> */}
-                <SBtn.btnPushBG> T </SBtn.btnPushBG>
-                <SBtn.btnPushBG> T </SBtn.btnPushBG>
-                <SBtn.btnPushBG> T </SBtn.btnPushBG>
-                <SBtn.btnPushBG> T </SBtn.btnPushBG>
-                <SBtn.btnPushBG> T </SBtn.btnPushBG>
-                <SBtn.btnPushBG> T </SBtn.btnPushBG>
-                <SBtn.btnPushBG> T </SBtn.btnPushBG>
-                <SBtn.btnPushBG> T </SBtn.btnPushBG>
-                <SBtn.btnPushBG> T </SBtn.btnPushBG>
-                <SBtn.btnPushBG> T </SBtn.btnPushBG>
-                <SBtn.btnPushBG> T </SBtn.btnPushBG>
+                    Channel 생성
+                </SBtn.btnPushBG>
+                <SBtn.btnPushBG> 1 </SBtn.btnPushBG>
+                <SBtn.btnPushBG> 2 </SBtn.btnPushBG>
+                <SBtn.btnPushBG> 3 </SBtn.btnPushBG>
+                <SBtn.btnPushBG> 4 </SBtn.btnPushBG>
+                <SBtn.btnPushBG> 5 </SBtn.btnPushBG>
+                <SBtn.btnPushBG> 6 </SBtn.btnPushBG>
+                <SBtn.btnPushBG> 7 </SBtn.btnPushBG>
+                <SBtn.btnPushBG> F </SBtn.btnPushBG>
+            </S.FlexBox>
+            <S.FlexBox>
+                <SBtn.btnPushBG> 1 </SBtn.btnPushBG>
+                <SBtn.btnPushBG> 2 </SBtn.btnPushBG>
+                <SBtn.btnPushBG> 3 </SBtn.btnPushBG>
+                <SBtn.btnPushBG> 4 </SBtn.btnPushBG>
+                <SBtn.btnPushBG> 5 </SBtn.btnPushBG>
+                <SBtn.btnPushBG> 6 </SBtn.btnPushBG>
+                <SBtn.btnPushBG> 7 </SBtn.btnPushBG>
+                <SBtn.btnPushBG> F </SBtn.btnPushBG>
+            </S.FlexBox>
+            <S.FlexBox>
+                <SBtn.btnPushBG> 1 </SBtn.btnPushBG>
+                <SBtn.btnPushBG> 2 </SBtn.btnPushBG>
+                <SBtn.btnPushBG> 3 </SBtn.btnPushBG>
+                <SBtn.btnPushBG> 4 </SBtn.btnPushBG>
+                <SBtn.btnPushBG> 5 </SBtn.btnPushBG>
+                <SBtn.btnPushBG> 6 </SBtn.btnPushBG>
+                <SBtn.btnPushBG> 7 </SBtn.btnPushBG>
+                <SBtn.btnPushBG> F </SBtn.btnPushBG>
             </S.FlexBox>
         </S.ButtonContainer>
     )

@@ -4,25 +4,23 @@ import { logContentState, logType, logTypeConstant, modalState } from "@/compone
 import * as S from "@/components/styled/Modal.styled";
 import { devInstance } from "@/api/axios";
 
-interface signUpDto {
+interface loginDto {
     email: string,
-    username: string,
     password: string,
 }
 
 const line = "__________________________________";
 
-const SignUpModal = () => {
+const LoginModal = () => {
     const [modalShow, setModalShow] = useRecoilState(modalState);
     const [logContent, setLogContent] = useRecoilState(logContentState);
     const [email, setEmail] = useState('');
-    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const closeModal = () => {
         setModalShow((state) => {
             const newState = { ...state };
-            newState.signUp = false;
+            newState.login = false;
             return newState;
         })
     }
@@ -35,16 +33,15 @@ const SignUpModal = () => {
         })
         logContentList.push({
             type: logTypeConstant.blue,
-            content: `${SignUpModal.name} 실행`,
+            content: `${LoginModal.name} 실행`,
         })
 
-        const signUpData: signUpDto = {
+        const loginData: loginDto = {
             email: email,
-            username: username,
             password: password
         }
         const formData = new FormData();
-        Object.entries(signUpData).map(([k, v]) => {
+        Object.entries(loginData).map(([k, v]) => {
             formData.append(k, v);
         })
         logContentList.push({
@@ -52,12 +49,12 @@ const SignUpModal = () => {
             content: `${JSON.stringify(Object.fromEntries(formData))}`,
         })
 
-        await devInstance.post("/user/signup", formData)
+        await devInstance.post("/user/login", formData)
             .then((res) => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.blue,
-                    content: `${SignUpModal.name} 결과`,
+                    content: `${LoginModal.name} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -69,7 +66,7 @@ const SignUpModal = () => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.red,
-                    content: `${SignUpModal.name} 결과`,
+                    content: `${LoginModal.name} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -86,21 +83,15 @@ const SignUpModal = () => {
     return (
         <>
             {
-                modalShow.signUp &&
+                modalShow.login &&
                 <S.Modal onClick={handleOverlayClick}>
                     <S.ModalContent onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}>
-                        <h2>User Registration</h2>
+                        <h2>User Login</h2>
                         <S.ModalInput
                             type="text"
                             placeholder="Email"
                             value={email}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-                        />
-                        <S.ModalInput
-                            type="text"
-                            placeholder="Username"
-                            value={username}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
                         />
                         <S.ModalInput
                             type="password"
@@ -120,4 +111,4 @@ const SignUpModal = () => {
     )
 }
 
-export default SignUpModal;
+export default LoginModal;
