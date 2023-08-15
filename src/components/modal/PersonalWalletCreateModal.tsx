@@ -5,23 +5,19 @@ import * as S from "@/components/styled/Modal.styled";
 import { devInstance } from "@/api/axios";
 import { line } from "@/components/constant/constant";
 
-interface channelCreateDto {
-    channelName: string,
-    chnnelDescription: string,
-    chnnelPassword: string,
+interface personalWalletCreateDto {
+    password: string;
 }
 
-const ChannelCreateModal = () => {
+const PersonalWalletCreateModal = () => {
     const [modalShow, setModalShow] = useRecoilState(modalState);
     const [logContent, setLogContent] = useRecoilState(logContentState);
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
     const [password, setPassword] = useState('');
 
     const closeModal = () => {
         setModalShow((state) => {
             const newState = { ...state };
-            newState.channelCreate = false;
+            newState.personalWalletCreate = false;
             return newState;
         })
     }
@@ -34,16 +30,14 @@ const ChannelCreateModal = () => {
         })
         logContentList.push({
             type: logTypeConstant.blue,
-            content: `${ChannelCreateModal.name} 실행`,
+            content: `${PersonalWalletCreateModal.name} 실행`,
         })
 
-        const channelCreateData: channelCreateDto = {
-            channelName: name,
-            chnnelDescription: description,
-            chnnelPassword: password
+        const personalWalletCreateData: personalWalletCreateDto = {
+            password: password,
         }
         const formData = new FormData();
-        Object.entries(channelCreateData).map(([k, v]) => {
+        Object.entries(personalWalletCreateData).map(([k, v]) => {
             formData.append(k, v);
         })
         logContentList.push({
@@ -51,12 +45,12 @@ const ChannelCreateModal = () => {
             content: `${JSON.stringify(Object.fromEntries(formData))}`,
         })
 
-        await devInstance.post("/channel", formData)
+        await devInstance.post("/wallet/user", formData)
             .then((res) => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.blue,
-                    content: `${ChannelCreateModal.name} 결과`,
+                    content: `${PersonalWalletCreateModal.name} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -68,7 +62,7 @@ const ChannelCreateModal = () => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.red,
-                    content: `${ChannelCreateModal.name} 결과`,
+                    content: `${PersonalWalletCreateModal.name} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -85,25 +79,13 @@ const ChannelCreateModal = () => {
     return (
         <>
             {
-                modalShow.channelCreate &&
+                modalShow.personalWalletCreate &&
                 <S.Modal onClick={handleOverlayClick}>
                     <S.ModalContent onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}>
-                        <h2>Channel Registration</h2>
+                        <h2>Personal Wallet Registration</h2>
                         <S.ModalInput
-                            type="text"
-                            placeholder="channelName"
-                            value={name}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-                        />
-                        <S.ModalInput
-                            type="text"
-                            placeholder="channelDescription"
-                            value={description}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDescription(e.target.value)}
-                        />
-                        <S.ModalInput
-                            type="text"
-                            placeholder="channelPassword"
+                            type="password"
+                            placeholder="password"
                             value={password}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                         />
@@ -119,4 +101,4 @@ const ChannelCreateModal = () => {
     )
 }
 
-export default ChannelCreateModal;
+export default PersonalWalletCreateModal;

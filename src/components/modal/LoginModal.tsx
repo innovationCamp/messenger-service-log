@@ -3,13 +3,12 @@ import { useRecoilState } from "recoil";
 import { logContentState, logType, logTypeConstant, modalState } from "@/components/atom/ModalShow"
 import * as S from "@/components/styled/Modal.styled";
 import { devInstance } from "@/api/axios";
+import { line } from "@/components/constant/constant";
 
 interface loginDto {
     email: string,
     password: string,
 }
-
-const line = "__________________________________";
 
 const LoginModal = () => {
     const [modalShow, setModalShow] = useRecoilState(modalState);
@@ -70,7 +69,7 @@ const LoginModal = () => {
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
-                    content: `${e}`,
+                    content: `${e.response.data.message}`,
                 })
                 setLogContent((v) => v.concat(logContentList));
             });

@@ -13,7 +13,7 @@ export const logTypeConstant = {
 }
 
 export const logContentState = atom<logType[]>({
-    key: "logContainerElState",
+    key: "logContentState",
     default: [],
 })
 
@@ -22,6 +22,15 @@ export const modalKeyConstance = {
     signUp: "signUp",
     login: "login",
     channelCreate: "channelCreate",
+    channelParticipant: "channelParticipant",
+    channelSearch: "channelSearch",
+    personalWalletCreate: "personalWalletCreate",
+    groupWalletCreate: "groupWalletCreate", 
+    groupWalletListByChannel: "groupWalletListByChannel",
+    groupWalletParticipant: "groupWalletParticipant",
+    groupWalletGetByGroupWallet: "groupWalletGetByGroupWallet",
+    transactionCreate: "transactionCreate",
+    transactionGetByGroupWallet: "transactionGetByGroupWallet",
 }
 
 interface initModalType {
@@ -29,12 +38,30 @@ interface initModalType {
     signUp: boolean;
     login: boolean;
     channelCreate: boolean;
+    channelParticipant: boolean;
+    channelSearch: boolean;
+    personalWalletCreate: boolean;
+    groupWalletCreate: boolean;
+    groupWalletListByChannel: boolean;
+    groupWalletParticipant: boolean;
+    groupWalletGetByGroupWallet: boolean;
+    transactionCreate: boolean;
+    transactionGetByGroupWallet: boolean;
 }
 
 const initModal: initModalType = {
     signUp: false,
     login: false,
     channelCreate: false,
+    channelParticipant: false,
+    channelSearch: false,
+    personalWalletCreate: false,
+    groupWalletCreate: false,
+    groupWalletListByChannel: false,
+    groupWalletParticipant: false,
+    groupWalletGetByGroupWallet: false,
+    transactionCreate: false,
+    transactionGetByGroupWallet: false,
 }
 
 export const modalState = atom({

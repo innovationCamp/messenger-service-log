@@ -5,23 +5,25 @@ import * as S from "@/components/styled/Modal.styled";
 import { devInstance } from "@/api/axios";
 import { line } from "@/components/constant/constant";
 
-interface channelCreateDto {
-    channelName: string,
-    chnnelDescription: string,
-    chnnelPassword: string,
+interface TransactionCreateDto {
+    password: string,
+    walletId: string,
+    targetWalletId: string,
+    amount: string,
 }
 
-const ChannelCreateModal = () => {
+const TransactionCreateModal = () => {
     const [modalShow, setModalShow] = useRecoilState(modalState);
     const [logContent, setLogContent] = useRecoilState(logContentState);
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
     const [password, setPassword] = useState('');
+    const [walletId, setWalletId] = useState('');
+    const [targetWalletId, setTargetWalletId] = useState('');
+    const [amount, setAmount] = useState('');
 
     const closeModal = () => {
         setModalShow((state) => {
             const newState = { ...state };
-            newState.channelCreate = false;
+            newState.transactionCreate = false;
             return newState;
         })
     }
@@ -34,16 +36,17 @@ const ChannelCreateModal = () => {
         })
         logContentList.push({
             type: logTypeConstant.blue,
-            content: `${ChannelCreateModal.name} 실행`,
+            content: `${TransactionCreateModal.name} 실행`,
         })
 
-        const channelCreateData: channelCreateDto = {
-            channelName: name,
-            chnnelDescription: description,
-            chnnelPassword: password
+        const transactionCreateData: TransactionCreateDto = {
+            password: password,
+            walletId: walletId,
+            targetWalletId: targetWalletId,
+            amount: amount,
         }
         const formData = new FormData();
-        Object.entries(channelCreateData).map(([k, v]) => {
+        Object.entries(transactionCreateData).map(([k, v]) => {
             formData.append(k, v);
         })
         logContentList.push({
@@ -51,12 +54,12 @@ const ChannelCreateModal = () => {
             content: `${JSON.stringify(Object.fromEntries(formData))}`,
         })
 
-        await devInstance.post("/channel", formData)
+        await devInstance.post("/wallet/transaction", formData)
             .then((res) => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.blue,
-                    content: `${ChannelCreateModal.name} 결과`,
+                    content: `${TransactionCreateModal.name} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -68,7 +71,7 @@ const ChannelCreateModal = () => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.red,
-                    content: `${ChannelCreateModal.name} 결과`,
+                    content: `${TransactionCreateModal.name} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -85,25 +88,31 @@ const ChannelCreateModal = () => {
     return (
         <>
             {
-                modalShow.channelCreate &&
+                modalShow.transactionCreate &&
                 <S.Modal onClick={handleOverlayClick}>
                     <S.ModalContent onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}>
-                        <h2>Channel Registration</h2>
+                        <h2>create Transaction</h2>
                         <S.ModalInput
                             type="text"
-                            placeholder="channelName"
-                            value={name}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                            placeholder="walletId"
+                            value={walletId}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setWalletId(e.target.value)}
                         />
                         <S.ModalInput
                             type="text"
-                            placeholder="channelDescription"
-                            value={description}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDescription(e.target.value)}
+                            placeholder="targetWalletId"
+                            value={targetWalletId}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTargetWalletId(e.target.value)}
                         />
                         <S.ModalInput
                             type="text"
-                            placeholder="channelPassword"
+                            placeholder="amount"
+                            value={amount}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAmount(e.target.value)}
+                        />
+                        <S.ModalInput
+                            type="password"
+                            placeholder="password"
                             value={password}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                         />
@@ -119,4 +128,4 @@ const ChannelCreateModal = () => {
     )
 }
 
-export default ChannelCreateModal;
+export default TransactionCreateModal;
