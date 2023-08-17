@@ -1,22 +1,5 @@
 import { atom } from "recoil";
 
-export interface logType {
-    type: string
-    content: string
-}
-
-export const logTypeConstant = {
-    white: "white",
-    red: "red",
-    blue: "blue",
-    yellow: "yellow",
-}
-
-export const logContentState = atom<logType[]>({
-    key: "logContentState",
-    default: [],
-})
-
 //initModalType 키랑 일치시키면서 관리
 export const modalKeyConstance = {
     signUp: "signUp",
@@ -24,6 +7,7 @@ export const modalKeyConstance = {
     channelCreate: "channelCreate",
     channelParticipant: "channelParticipant",
     channelSearch: "channelSearch",
+    channelNavigate: "channelNavigate",
     personalWalletCreate: "personalWalletCreate",
     groupWalletCreate: "groupWalletCreate", 
     groupWalletListByChannel: "groupWalletListByChannel",
@@ -40,6 +24,7 @@ interface initModalType {
     channelCreate: boolean;
     channelParticipant: boolean;
     channelSearch: boolean;
+    channelNavigate: boolean;
     personalWalletCreate: boolean;
     groupWalletCreate: boolean;
     groupWalletListByChannel: boolean;
@@ -55,6 +40,7 @@ const initModal: initModalType = {
     channelCreate: false,
     channelParticipant: false,
     channelSearch: false,
+    channelNavigate: false,
     personalWalletCreate: false,
     groupWalletCreate: false,
     groupWalletListByChannel: false,
@@ -63,6 +49,23 @@ const initModal: initModalType = {
     transactionCreate: false,
     transactionGetByGroupWallet: false,
 }
+
+export interface logType {
+    type: string
+    content: string
+}
+
+export const logTypeConstant = {
+    white: "white",
+    red: "red",
+    blue: "blue",
+    yellow: "yellow",
+}
+
+export const logContentState = atom<logType[]>({
+    key: "logContentState",
+    default: [],
+})
 
 export const modalState = atom({
     key: "modalState",

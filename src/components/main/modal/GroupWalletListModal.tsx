@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { logContentState, logType, logTypeConstant, modalState } from "@/components/atom/ModalShow"
-import * as S from "@/components/styled/Modal.styled";
+import * as S from "@/components/main/styled/Modal.styled";
 import { devInstance } from "@/api/axios";
 import { line } from "@/components/constant/constant";
 

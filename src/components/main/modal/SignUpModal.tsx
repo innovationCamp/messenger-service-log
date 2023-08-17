@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { logContentState, logType, logTypeConstant, modalState } from "@/components/atom/ModalShow"
-import * as S from "@/components/styled/Modal.styled";
+import * as S from "@/components/main/styled/Modal.styled";
 import { devInstance } from "@/api/axios";
 import { line } from "@/components/constant/constant";
 
-interface TransactionGetDto {
-    groupWalletId: string,
+interface signUpDto {
+    email: string,
+    username: string,
+    password: string,
 }
 
-const TransactionGetByGroupModal = () => {
+const SignUpModal = () => {
     const [modalShow, setModalShow] = useRecoilState(modalState);
     const [logContent, setLogContent] = useRecoilState(logContentState);
-    const [groupWalletId, setGroupWalletId] = useState('');
+    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
     const closeModal = () => {
         setModalShow((state) => {
             const newState = { ...state };
-            newState.transactionGetByGroupWallet = false;
+            newState.signUp = false;
             return newState;
         })
     }
@@ -30,14 +34,16 @@ const TransactionGetByGroupModal = () => {
         })
         logContentList.push({
             type: logTypeConstant.blue,
-            content: `${TransactionGetByGroupModal.name} 실행`,
+            content: `${SignUpModal.name} 실행`,
         })
 
-        const transactionGetData: TransactionGetDto = {
-            groupWalletId: groupWalletId,
+        const signUpData: signUpDto = {
+            email: email,
+            username: username,
+            password: password
         }
         const formData = new FormData();
-        Object.entries(transactionGetData).map(([k, v]) => {
+        Object.entries(signUpData).map(([k, v]) => {
             formData.append(k, v);
         })
         logContentList.push({
@@ -45,12 +51,12 @@ const TransactionGetByGroupModal = () => {
             content: `${JSON.stringify(Object.fromEntries(formData))}`,
         })
 
-        await devInstance.get(`/wallet/group/${groupWalletId}/transaction/all`)
+        await devInstance.post("/user/signup", formData)
             .then((res) => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.blue,
-                    content: `${TransactionGetByGroupModal.name} 결과`,
+                    content: `${SignUpModal.name} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -62,7 +68,7 @@ const TransactionGetByGroupModal = () => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.red,
-                    content: `${TransactionGetByGroupModal.name} 결과`,
+                    content: `${SignUpModal.name} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -79,15 +85,27 @@ const TransactionGetByGroupModal = () => {
     return (
         <>
             {
-                modalShow.transactionGetByGroupWallet &&
+                modalShow.signUp &&
                 <S.Modal onClick={handleOverlayClick}>
                     <S.ModalContent onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}>
-                        <h2> group Wallet 내역</h2>
+                        <h2>User Registration</h2>
                         <S.ModalInput
                             type="text"
-                            placeholder="groupWalletId"
-                            value={groupWalletId}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGroupWalletId(e.target.value)}
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                        />
+                        <S.ModalInput
+                            type="text"
+                            placeholder="Username"
+                            value={username}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+                        />
+                        <S.ModalInput
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                         />
                         <S.ModalSubmit
                             type="submit"
@@ -101,4 +119,4 @@ const TransactionGetByGroupModal = () => {
     )
 }
 
-export default TransactionGetByGroupModal;
+export default SignUpModal;

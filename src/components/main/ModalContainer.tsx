@@ -1,4 +1,3 @@
-import * as S from "@/components/styled/ModalContainer.styled";
 import ChannelCreateModal from "./modal/ChannelCreateModal";
 import ChannelParticipantModal from "./modal/ChannelParticipantModal";
 import ChannelSearchModal from "./modal/ChannelSearchModal";
@@ -11,6 +10,8 @@ import PersonalWalletCreateModal from "./modal/PersonalWalletCreateModal";
 import SignUpModal from "./modal/SignUpModal";
 import TransactionCreateModal from "./modal/TransactionCreateModal";
 import TransactionGetByGroupModal from "./modal/TransactionGetByGroupModal";
+import * as S from "@/components/main/styled/ModalContainer.styled";
+import ChannelNavigateModal from "./modal/ChannelNavigateModal";
 
 const ModalContainer = () => {
     return (
@@ -20,6 +21,7 @@ const ModalContainer = () => {
             <ChannelCreateModal />
             <ChannelParticipantModal />
             <ChannelSearchModal />
+            <ChannelNavigateModal />
             <PersonalWalletCreateModal />
             <GroupWalletCreateModal />
             <GroupWalletListModal />

@@ -13,7 +13,7 @@ padding: 20px;
 `
 
 const LogWhite = styled.p`
-color: white;
+color: #ffffff;
 margin: 0 0 2px 0;
 white-space: pre-wrap;
 `

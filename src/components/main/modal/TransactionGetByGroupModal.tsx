@@ -1,27 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { logContentState, logType, logTypeConstant, modalState } from "@/components/atom/ModalShow"
-import * as S from "@/components/styled/Modal.styled";
+import * as S from "@/components/main/styled/Modal.styled";
 import { devInstance } from "@/api/axios";
 import { line } from "@/components/constant/constant";
 
-interface channelCreateDto {
-    channelName: string,
-    chnnelDescription: string,
-    chnnelPassword: string,
+interface TransactionGetDto {
+    groupWalletId: string,
 }
 
-const ChannelCreateModal = () => {
+const TransactionGetByGroupModal = () => {
     const [modalShow, setModalShow] = useRecoilState(modalState);
     const [logContent, setLogContent] = useRecoilState(logContentState);
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    const [password, setPassword] = useState('');
+    const [groupWalletId, setGroupWalletId] = useState('');
 
     const closeModal = () => {
         setModalShow((state) => {
             const newState = { ...state };
-            newState.channelCreate = false;
+            newState.transactionGetByGroupWallet = false;
             return newState;
         })
     }
@@ -34,16 +30,14 @@ const ChannelCreateModal = () => {
         })
         logContentList.push({
             type: logTypeConstant.blue,
-            content: `${ChannelCreateModal.name} 실행`,
+            content: `${TransactionGetByGroupModal.name} 실행`,
         })
 
-        const channelCreateData: channelCreateDto = {
-            channelName: name,
-            chnnelDescription: description,
-            chnnelPassword: password
+        const transactionGetData: TransactionGetDto = {
+            groupWalletId: groupWalletId,
         }
         const formData = new FormData();
-        Object.entries(channelCreateData).map(([k, v]) => {
+        Object.entries(transactionGetData).map(([k, v]) => {
             formData.append(k, v);
         })
         logContentList.push({
@@ -51,12 +45,12 @@ const ChannelCreateModal = () => {
             content: `${JSON.stringify(Object.fromEntries(formData))}`,
         })
 
-        await devInstance.post("/channel", formData)
+        await devInstance.get(`/wallet/group/${groupWalletId}/transaction/all`)
             .then((res) => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.blue,
-                    content: `${ChannelCreateModal.name} 결과`,
+                    content: `${TransactionGetByGroupModal.name} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -68,7 +62,7 @@ const ChannelCreateModal = () => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.red,
-                    content: `${ChannelCreateModal.name} 결과`,
+                    content: `${TransactionGetByGroupModal.name} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -85,27 +79,15 @@ const ChannelCreateModal = () => {
     return (
         <>
             {
-                modalShow.channelCreate &&
+                modalShow.transactionGetByGroupWallet &&
                 <S.Modal onClick={handleOverlayClick}>
                     <S.ModalContent onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}>
-                        <h2>Channel Registration</h2>
+                        <h2> group Wallet 내역</h2>
                         <S.ModalInput
                             type="text"
-                            placeholder="channelName"
-                            value={name}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-                        />
-                        <S.ModalInput
-                            type="text"
-                            placeholder="channelDescription"
-                            value={description}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDescription(e.target.value)}
-                        />
-                        <S.ModalInput
-                            type="text"
-                            placeholder="channelPassword"
-                            value={password}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                            placeholder="groupWalletId"
+                            value={groupWalletId}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGroupWalletId(e.target.value)}
                         />
                         <S.ModalSubmit
                             type="submit"
@@ -119,4 +101,4 @@ const ChannelCreateModal = () => {
     )
 }
 
-export default ChannelCreateModal;
+export default TransactionGetByGroupModal;

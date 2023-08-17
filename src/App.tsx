@@ -1,26 +1,28 @@
-import Header from "@/components/Header";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { RecoilRoot } from "recoil";
-import BodyContent from "./components/BodyContent";
-import ButtonContainer from "./components/ButtonContainer";
-import Footer from "./components/Footer";
-import LogContainer from "./components/LogContainer";
-import ModalContainer from "./components/ModalContainer";
-import GlobalStyle from "./components/styled/Global.styled";
+import GlobalStyle from "@/components/styled/Global.styled";
+import Chat from "./page/Chat";
+import Main from "./page/Main";
+import { CookiesProvider } from 'react-cookie';
+import Forbidden from "./page/Forbidden";
 
 const App = () => {
     return (
         <>
             <GlobalStyle />
             <RecoilRoot>
-                <BodyContent>
-                    <Header />
-                    <ButtonContainer />
-                    <LogContainer />
-                    <Footer />
-                    <ModalContainer />
-                </BodyContent>
+                <CookiesProvider>
+                    <BrowserRouter>
+                        <Routes>
+                            <Route path="" element={<Main />} />
+                            <Route path="/chat" element={<Chat />} />
+                            <Route path="/forbidden" element={<Forbidden />} />
+                        </Routes>
+                    </BrowserRouter>
+                </CookiesProvider>
             </RecoilRoot>
         </>
+
     )
 }
 

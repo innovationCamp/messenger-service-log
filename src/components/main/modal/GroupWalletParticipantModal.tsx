@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { logContentState, logType, logTypeConstant, modalState } from "@/components/atom/ModalShow"
-import * as S from "@/components/styled/Modal.styled";
+import * as S from "@/components/main/styled/Modal.styled";
 import { devInstance } from "@/api/axios";
 import { line } from "@/components/constant/constant";
 
-interface groupWalletGetDto {
+interface GroupWalletParticipantDto {
     groupWalletId: string,
 }
 
-const GroupWalletGetModal = () => {
+const GroupWalletParticipantModal = () => {
     const [modalShow, setModalShow] = useRecoilState(modalState);
     const [logContent, setLogContent] = useRecoilState(logContentState);
     const [groupWalletId, setGroupWalletId] = useState('');
@@ -17,7 +17,7 @@ const GroupWalletGetModal = () => {
     const closeModal = () => {
         setModalShow((state) => {
             const newState = { ...state };
-            newState.groupWalletGetByGroupWallet = false;
+            newState.groupWalletParticipant = false;
             return newState;
         })
     }
@@ -30,14 +30,14 @@ const GroupWalletGetModal = () => {
         })
         logContentList.push({
             type: logTypeConstant.blue,
-            content: `${GroupWalletGetModal.name} 실행`,
+            content: `${GroupWalletParticipantModal.name} 실행`,
         })
 
-        const groupWalletGetData: groupWalletGetDto = {
+        const groupWalletParticipantData: GroupWalletParticipantDto = {
             groupWalletId: groupWalletId,
         }
         const formData = new FormData();
-        Object.entries(groupWalletGetData).map(([k, v]) => {
+        Object.entries(groupWalletParticipantData).map(([k, v]) => {
             formData.append(k, v);
         })
         logContentList.push({
@@ -45,12 +45,12 @@ const GroupWalletGetModal = () => {
             content: `${JSON.stringify(Object.fromEntries(formData))}`,
         })
 
-        await devInstance.get(`/wallet/group/${groupWalletId}`)
+        await devInstance.post(`/wallet/group/${groupWalletId}`, formData)
             .then((res) => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.blue,
-                    content: `${GroupWalletGetModal.name} 결과`,
+                    content: `${GroupWalletParticipantModal.name} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -62,7 +62,7 @@ const GroupWalletGetModal = () => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.red,
-                    content: `${GroupWalletGetModal.name} 결과`,
+                    content: `${GroupWalletParticipantModal.name} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -79,10 +79,10 @@ const GroupWalletGetModal = () => {
     return (
         <>
             {
-                modalShow.groupWalletGetByGroupWallet &&
+                modalShow.groupWalletParticipant &&
                 <S.Modal onClick={handleOverlayClick}>
                     <S.ModalContent onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}>
-                        <h2> group Wallet 조회</h2>
+                        <h2>group Wallet 참여</h2>
                         <S.ModalInput
                             type="text"
                             placeholder="groupWalletId"
@@ -101,4 +101,4 @@ const GroupWalletGetModal = () => {
     )
 }
 
-export default GroupWalletGetModal;
+export default GroupWalletParticipantModal;

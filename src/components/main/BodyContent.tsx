@@ -1,4 +1,4 @@
-import * as S from "@/components/styled/BodyContent.styled";
+import * as S from "@/components/main/styled/BodyContent.styled";
 import { ReactNode } from "react";
 
 interface BodyContentProps {

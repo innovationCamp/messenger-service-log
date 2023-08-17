@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { logContentState, logType, logTypeConstant, modalState } from "@/components/atom/ModalShow"
-import * as S from "@/components/styled/Modal.styled";
+import * as S from "@/components/main/styled/Modal.styled";
 import { devInstance } from "@/api/axios";
 import { line } from "@/components/constant/constant";
 
-interface personalWalletCreateDto {
-    password: string;
+interface ChannelSearchDto {
+    keyword: string,
 }
 
-const PersonalWalletCreateModal = () => {
+const ChannelSearchModal = () => {
     const [modalShow, setModalShow] = useRecoilState(modalState);
     const [logContent, setLogContent] = useRecoilState(logContentState);
-    const [password, setPassword] = useState('');
+    const [keyword, setKeyword] = useState("");
 
     const closeModal = () => {
         setModalShow((state) => {
             const newState = { ...state };
-            newState.personalWalletCreate = false;
+            newState.channelSearch = false;
             return newState;
         })
     }
@@ -30,27 +30,28 @@ const PersonalWalletCreateModal = () => {
         })
         logContentList.push({
             type: logTypeConstant.blue,
-            content: `${PersonalWalletCreateModal.name} 실행`,
+            content: `${ChannelSearchModal.name} 실행`,
         })
 
-        const personalWalletCreateData: personalWalletCreateDto = {
-            password: password,
+        const channelSearchData: ChannelSearchDto = {
+            keyword: keyword,
         }
         const formData = new FormData();
-        Object.entries(personalWalletCreateData).map(([k, v]) => {
+        Object.entries(channelSearchData).map(([k, v]) => {
             formData.append(k, v);
         })
         logContentList.push({
             type: logTypeConstant.white,
             content: `${JSON.stringify(Object.fromEntries(formData))}`,
         })
-
-        await devInstance.post("/wallet/user", formData)
+        await devInstance.get(`/channel/search`, {
+            params: Object.fromEntries(formData),
+        })
             .then((res) => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.blue,
-                    content: `${PersonalWalletCreateModal.name} 결과`,
+                    content: `${ChannelSearchModal.name} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -62,7 +63,7 @@ const PersonalWalletCreateModal = () => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.red,
-                    content: `${PersonalWalletCreateModal.name} 결과`,
+                    content: `${ChannelSearchModal.name} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -79,15 +80,15 @@ const PersonalWalletCreateModal = () => {
     return (
         <>
             {
-                modalShow.personalWalletCreate &&
+                modalShow.channelSearch &&
                 <S.Modal onClick={handleOverlayClick}>
                     <S.ModalContent onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}>
-                        <h2>Personal Wallet Registration</h2>
+                        <h2>Open Channel Search</h2>
                         <S.ModalInput
-                            type="password"
-                            placeholder="password"
-                            value={password}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                            type="text"
+                            placeholder="keyword"
+                            value={keyword}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKeyword(e.target.value)}
                         />
                         <S.ModalSubmit
                             type="submit"
@@ -101,4 +102,4 @@ const PersonalWalletCreateModal = () => {
     )
 }
 
-export default PersonalWalletCreateModal;
+export default ChannelSearchModal;

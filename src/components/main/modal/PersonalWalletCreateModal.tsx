@@ -1,25 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { logContentState, logType, logTypeConstant, modalState } from "@/components/atom/ModalShow"
-import * as S from "@/components/styled/Modal.styled";
+import * as S from "@/components/main/styled/Modal.styled";
 import { devInstance } from "@/api/axios";
 import { line } from "@/components/constant/constant";
 
-interface loginDto {
-    email: string,
-    password: string,
+interface personalWalletCreateDto {
+    password: string;
 }
 
-const LoginModal = () => {
+const PersonalWalletCreateModal = () => {
     const [modalShow, setModalShow] = useRecoilState(modalState);
     const [logContent, setLogContent] = useRecoilState(logContentState);
-    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const closeModal = () => {
         setModalShow((state) => {
             const newState = { ...state };
-            newState.login = false;
+            newState.personalWalletCreate = false;
             return newState;
         })
     }
@@ -32,15 +30,14 @@ const LoginModal = () => {
         })
         logContentList.push({
             type: logTypeConstant.blue,
-            content: `${LoginModal.name} 실행`,
+            content: `${PersonalWalletCreateModal.name} 실행`,
         })
 
-        const loginData: loginDto = {
-            email: email,
-            password: password
+        const personalWalletCreateData: personalWalletCreateDto = {
+            password: password,
         }
         const formData = new FormData();
-        Object.entries(loginData).map(([k, v]) => {
+        Object.entries(personalWalletCreateData).map(([k, v]) => {
             formData.append(k, v);
         })
         logContentList.push({
@@ -48,12 +45,12 @@ const LoginModal = () => {
             content: `${JSON.stringify(Object.fromEntries(formData))}`,
         })
 
-        await devInstance.post("/user/login", formData)
+        await devInstance.post("/wallet/user", formData)
             .then((res) => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.blue,
-                    content: `${LoginModal.name} 결과`,
+                    content: `${PersonalWalletCreateModal.name} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -65,7 +62,7 @@ const LoginModal = () => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.red,
-                    content: `${LoginModal.name} 결과`,
+                    content: `${PersonalWalletCreateModal.name} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -82,19 +79,13 @@ const LoginModal = () => {
     return (
         <>
             {
-                modalShow.login &&
+                modalShow.personalWalletCreate &&
                 <S.Modal onClick={handleOverlayClick}>
                     <S.ModalContent onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}>
-                        <h2>User Login</h2>
-                        <S.ModalInput
-                            type="text"
-                            placeholder="Email"
-                            value={email}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-                        />
+                        <h2>Personal Wallet Registration</h2>
                         <S.ModalInput
                             type="password"
-                            placeholder="Password"
+                            placeholder="password"
                             value={password}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                         />
@@ -110,4 +101,4 @@ const LoginModal = () => {
     )
 }
 
-export default LoginModal;
+export default PersonalWalletCreateModal;

@@ -1,4 +1,4 @@
-import * as S from "@/components/styled/Footer.styled";
+import * as S from "@/components/main/styled/Footer.styled";
 
 const Footer = () => {
     return (

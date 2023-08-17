@@ -1,8 +1,8 @@
-import * as S from "@/components/styled/ButtonContainer.styled";
-import * as SBtn from "@/components/styled/Btn.styled";
+import * as S from "@/components/main/styled/ButtonContainer.styled";
+import * as SBtn from "@/components/main/styled/Btn.styled";
 import { useRecoilState } from "recoil";
-import { logContentState, modalKeyConstance, modalState } from "./atom/ModalShow";
-import { ButtonEvent } from "./event/ButtonEvent";
+import { logContentState, modalKeyConstance, modalState } from "@/components/atom/ModalShow";
+import { ButtonEvent } from "@/components/event/ButtonEvent";
 
 const ButtonContainer = () => {
     const [logContent, setLogContent] = useRecoilState(logContentState);
@@ -64,6 +64,11 @@ const ButtonContainer = () => {
                     openModal(modalKeyConstance.channelSearch);
                 }}>
                     공개 Channel 검색
+                </SBtn.btnPushBG>
+                <SBtn.btnPushBG onClick={() => {
+                    openModal(modalKeyConstance.channelNavigate);
+                }}>
+                    참여 중 Channel Navigat 
                 </SBtn.btnPushBG>
                 <SBtn.btnPushBG> 1 </SBtn.btnPushBG>
                 <SBtn.btnPushBG> 2 </SBtn.btnPushBG>
