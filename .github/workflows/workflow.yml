@@ -68,6 +68,6 @@ jobs:
           context: ./
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/team12-react:latest
+          tags: ${{ secrets.ORG_DOCKERHUB_USERNAME }}/team12-react:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
