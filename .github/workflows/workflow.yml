@@ -39,7 +39,7 @@ jobs:
       - name: build
         run: |
           sudo cat > .env.production
-          ${{ CLIENT_PRODUCT }}
+          echo "${{ secrets.CLIENT_PRODUCT }}"
           npm run build
 
       # Docker image 생성 및 dockerhub에 push
