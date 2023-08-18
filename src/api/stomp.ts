@@ -2,7 +2,7 @@ import SockJS from 'sockjs-client';
 import * as StompJs from '@stomp/stompjs';
 
 const stompInstance = new StompJs.Client({
-    brokerURL: "ws://backend:8080/ws-stomp",
+    brokerURL: "ws://localhost:8080/ws-stomp",
     connectHeaders: {
         login: 'user',
         passcode: 'password',
