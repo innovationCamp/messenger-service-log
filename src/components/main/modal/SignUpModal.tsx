@@ -4,6 +4,7 @@ import { logContentState, logType, logTypeConstant, modalState } from "@/compone
 import * as S from "@/components/main/styled/Modal.styled";
 import { devInstance } from "@/api/axios";
 import { line } from "@/components/constant/constant";
+import { modalProps } from "../interface";
 
 interface signUpDto {
     email: string,
@@ -11,7 +12,7 @@ interface signUpDto {
     password: string,
 }
 
-const SignUpModal = () => {
+const SignUpModal = ({eventName}: modalProps) => {
     const [modalShow, setModalShow] = useRecoilState(modalState);
     const [logContent, setLogContent] = useRecoilState(logContentState);
     const [email, setEmail] = useState('');
@@ -34,7 +35,7 @@ const SignUpModal = () => {
         })
         logContentList.push({
             type: logTypeConstant.blue,
-            content: `${SignUpModal.name} 실행`,
+            content: `${eventName} 실행`,
         })
 
         const signUpData: signUpDto = {
@@ -56,7 +57,7 @@ const SignUpModal = () => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.blue,
-                    content: `${SignUpModal.name} 결과`,
+                    content: `${eventName} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -68,7 +69,7 @@ const SignUpModal = () => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.red,
-                    content: `${SignUpModal.name} 결과`,
+                    content: `${eventName} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,

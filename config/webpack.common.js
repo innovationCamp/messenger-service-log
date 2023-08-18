@@ -21,6 +21,7 @@ module.exports = {
     }),
     new webpack.ProvidePlugin({
       React: "react",
+      process: 'process/browser.js',
     }),
   ],
   resolve: {

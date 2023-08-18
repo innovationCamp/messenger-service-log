@@ -3,8 +3,6 @@ import * as S from "@/components/chat/styled/Chat.styled";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-
-
 const ChatInfo = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [title, setTitle] = useState("");

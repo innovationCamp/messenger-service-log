@@ -4,6 +4,7 @@ import { logContentState, logType, logTypeConstant, modalState } from "@/compone
 import * as S from "@/components/main/styled/Modal.styled";
 import { devInstance } from "@/api/axios";
 import { line } from "@/components/constant/constant";
+import { modalProps } from "../interface";
 
 interface TransactionCreateDto {
     password: string,
@@ -12,7 +13,7 @@ interface TransactionCreateDto {
     amount: string,
 }
 
-const TransactionCreateModal = () => {
+const TransactionCreateModal = ({eventName}: modalProps) => {
     const [modalShow, setModalShow] = useRecoilState(modalState);
     const [logContent, setLogContent] = useRecoilState(logContentState);
     const [password, setPassword] = useState('');
@@ -36,7 +37,7 @@ const TransactionCreateModal = () => {
         })
         logContentList.push({
             type: logTypeConstant.blue,
-            content: `${TransactionCreateModal.name} 실행`,
+            content: `${eventName} 실행`,
         })
 
         const transactionCreateData: TransactionCreateDto = {
@@ -59,7 +60,7 @@ const TransactionCreateModal = () => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.blue,
-                    content: `${TransactionCreateModal.name} 결과`,
+                    content: `${eventName} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -71,7 +72,7 @@ const TransactionCreateModal = () => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.red,
-                    content: `${TransactionCreateModal.name} 결과`,
+                    content: `${eventName} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,

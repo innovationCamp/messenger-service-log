@@ -2,19 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { logContentState, logType, logTypeConstant, modalState } from "@/components/atom/ModalShow"
 import * as S from "@/components/main/styled/Modal.styled";
-import { devInstance } from "@/api/axios";
 import { line } from "@/components/constant/constant";
-import { useNavigate } from "react-router-dom";
+import { modalProps } from "../interface";
 
 interface ChannelNavigateDto {
     channelId: string,
 }
 
-const ChannelNavigateModal = () => {
+const ChannelNavigateModal = ({ eventName }: modalProps) => {
     const [modalShow, setModalShow] = useRecoilState(modalState);
     const [logContent, setLogContent] = useRecoilState(logContentState);
     const [channelId, setChannelId] = useState("");
-    const navigate = useNavigate();
 
     const closeModal = () => {
         setModalShow((state) => {
@@ -39,7 +37,7 @@ const ChannelNavigateModal = () => {
         })
         logContentList.push({
             type: logTypeConstant.blue,
-            content: `${ChannelNavigateModal.name} 실행`,
+            content: `${eventName} 실행`,
         })
 
         const ChannelNavigateData: ChannelNavigateDto = {
@@ -53,36 +51,10 @@ const ChannelNavigateModal = () => {
             type: logTypeConstant.white,
             content: `${JSON.stringify(Object.fromEntries(formData))}`,
         })
-        // navigate("/chat");
+        
         openInNewTab(`/chat?channelId=${channelId}`);
-        // await devInstance.post(`/channel/${channelId}/signup`, null, {
-        //     params: Object.fromEntries(formData),
-        // })
-        //     .then((res) => {
-        //         closeModal();
-        //         logContentList.push({
-        //             type: logTypeConstant.blue,
-        //             content: `${ChannelNavigateModal.name} 결과`,
-        //         })
-        //         logContentList.push({
-        //             type: logTypeConstant.white,
-        //             content: `${JSON.stringify(res.data)}`,
-        //         })
-        //         setLogContent((v) => v.concat(logContentList));
-        //     })
-        //     .catch((e) => {
-        //         closeModal();
-        //         logContentList.push({
-        //             type: logTypeConstant.red,
-        //             content: `${ChannelNavigateModal.name} 결과`,
-        //         })
-        //         logContentList.push({
-        //             type: logTypeConstant.white,
-        //             content: `${e.response.data.message}`,
-        //         })
-        //         setLogContent((v) => v.concat(logContentList));
-        //     });
-
+        closeModal();
+        setLogContent((v) => v.concat(logContentList));
     };
 
     const handleOverlayClick = () => {

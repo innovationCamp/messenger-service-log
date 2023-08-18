@@ -4,12 +4,13 @@ import { logContentState, logType, logTypeConstant, modalState } from "@/compone
 import * as S from "@/components/main/styled/Modal.styled";
 import { devInstance } from "@/api/axios";
 import { line } from "@/components/constant/constant";
+import { modalProps } from "../interface";
 
 interface groupWalletListDto {
     channelId: string,
 }
 
-const GroupWalletListModal = () => {
+const GroupWalletListModal = ({eventName}: modalProps) => {
     const [modalShow, setModalShow] = useRecoilState(modalState);
     const [logContent, setLogContent] = useRecoilState(logContentState);
     const [channelId, setChannelId] = useState('');
@@ -30,7 +31,7 @@ const GroupWalletListModal = () => {
         })
         logContentList.push({
             type: logTypeConstant.blue,
-            content: `${GroupWalletListModal.name} 실행`,
+            content: `${eventName} 실행`,
         })
 
         const groupWalletListData: groupWalletListDto = {
@@ -50,7 +51,7 @@ const GroupWalletListModal = () => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.blue,
-                    content: `${GroupWalletListModal.name} 결과`,
+                    content: `${eventName} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -62,7 +63,7 @@ const GroupWalletListModal = () => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.red,
-                    content: `${GroupWalletListModal.name} 결과`,
+                    content: `${eventName} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,

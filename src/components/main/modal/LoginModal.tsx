@@ -5,13 +5,14 @@ import * as S from "@/components/main/styled/Modal.styled";
 import { devInstance } from "@/api/axios";
 import { ACCESS_HEADER, line, SET_ACCESS_HEADER } from "@/components/constant/constant";
 import { setCookie } from "@/components/util/CookieUtil";
+import { modalProps } from "../interface";
 
 interface loginDto {
     email: string,
     password: string,
 }
 
-const LoginModal = () => {
+const LoginModal = ({eventName}: modalProps) => {
     const [modalShow, setModalShow] = useRecoilState(modalState);
     const [logContent, setLogContent] = useRecoilState(logContentState);
     const [email, setEmail] = useState('');
@@ -33,7 +34,7 @@ const LoginModal = () => {
         })
         logContentList.push({
             type: logTypeConstant.blue,
-            content: `${LoginModal.name} 실행`,
+            content: `${eventName} 실행`,
         })
 
         const loginData: loginDto = {
@@ -58,7 +59,7 @@ const LoginModal = () => {
 
                 logContentList.push({
                     type: logTypeConstant.blue,
-                    content: `${LoginModal.name} 결과`,
+                    content: `${eventName} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -70,7 +71,7 @@ const LoginModal = () => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.red,
-                    content: `${LoginModal.name} 결과`,
+                    content: `${eventName} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,

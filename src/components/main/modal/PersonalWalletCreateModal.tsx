@@ -4,12 +4,13 @@ import { logContentState, logType, logTypeConstant, modalState } from "@/compone
 import * as S from "@/components/main/styled/Modal.styled";
 import { devInstance } from "@/api/axios";
 import { line } from "@/components/constant/constant";
+import { modalProps } from "../interface";
 
 interface personalWalletCreateDto {
     password: string;
 }
 
-const PersonalWalletCreateModal = () => {
+const PersonalWalletCreateModal = ({eventName}: modalProps) => {
     const [modalShow, setModalShow] = useRecoilState(modalState);
     const [logContent, setLogContent] = useRecoilState(logContentState);
     const [password, setPassword] = useState('');
@@ -30,7 +31,7 @@ const PersonalWalletCreateModal = () => {
         })
         logContentList.push({
             type: logTypeConstant.blue,
-            content: `${PersonalWalletCreateModal.name} 실행`,
+            content: `${eventName} 실행`,
         })
 
         const personalWalletCreateData: personalWalletCreateDto = {
@@ -50,7 +51,7 @@ const PersonalWalletCreateModal = () => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.blue,
-                    content: `${PersonalWalletCreateModal.name} 결과`,
+                    content: `${eventName} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,
@@ -62,7 +63,7 @@ const PersonalWalletCreateModal = () => {
                 closeModal();
                 logContentList.push({
                     type: logTypeConstant.red,
-                    content: `${PersonalWalletCreateModal.name} 결과`,
+                    content: `${eventName} 결과`,
                 })
                 logContentList.push({
                     type: logTypeConstant.white,

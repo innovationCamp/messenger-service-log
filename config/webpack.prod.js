@@ -5,6 +5,8 @@ const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const Dotenv = require('dotenv-webpack');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = merge(common, {
   mode: "production",
@@ -27,7 +29,13 @@ module.exports = merge(common, {
       },
     ],
   },
-  plugins: [new MiniCssExtractPlugin()],
+  plugins: [
+    new MiniCssExtractPlugin(),
+    new Dotenv({ path: ".env.production" }),
+    new CopyPlugin({
+      patterns: [{ from: "public/static", to: "static" }],
+    })
+  ],
   optimization: {
     usedExports: true,
     minimize: true,

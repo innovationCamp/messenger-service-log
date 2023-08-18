@@ -16,19 +16,19 @@ import ChannelNavigateModal from "./modal/ChannelNavigateModal";
 const ModalContainer = () => {
     return (
         <S.ModalContainer>
-            <SignUpModal />
-            <LoginModal />
-            <ChannelCreateModal />
-            <ChannelParticipantModal />
-            <ChannelSearchModal />
-            <ChannelNavigateModal />
-            <PersonalWalletCreateModal />
-            <GroupWalletCreateModal />
-            <GroupWalletListModal />
-            <GroupWalletParticipantModal />
-            <GroupWalletGetModal />
-            <TransactionCreateModal />
-            <TransactionGetByGroupModal />
+            <SignUpModal eventName="SignUpModal"/>
+            <LoginModal eventName="LoginModal"/>
+            <ChannelCreateModal eventName="ChannelCreateModal"/>
+            <ChannelParticipantModal eventName="ChannelParticipantModal"/>
+            <ChannelSearchModal eventName="ChannelSearchModal"/>
+            <ChannelNavigateModal eventName="ChannelNavigateModal"/>
+            <PersonalWalletCreateModal eventName="PersonalWalletModal"/>
+            <GroupWalletCreateModal eventName="GroupWalletCreateModal"/>
+            <GroupWalletListModal eventName="GroupWalletListModal"/>
+            <GroupWalletParticipantModal eventName="GroupWalletParticipantModal"/>
+            <GroupWalletGetModal eventName="GroupWalletGetModal"/>
+            <TransactionCreateModal eventName="TransactionCreateModal"/>
+            <TransactionGetByGroupModal eventName="TransactionGetByGroupModal"/>
         </S.ModalContainer>
     )
 }

@@ -1,7 +1,7 @@
 import * as S from "@/components/chat/styled/Chat.styled";
 import { useRecoilState } from "recoil";
 import { userState } from "../atom/User";
-import { jwtDecoded, Msg, responseMsgDto } from "./interface";
+import { jwtDecoded, responseMsgDto } from "./interface";
 
 interface MessageProps {
     responseMsg: responseMsgDto;
@@ -19,7 +19,7 @@ const Messege = ({ responseMsg }: MessageProps) => {
         <>
             {ownerCheck(responseMsg, user) ? <S.MsgOwner>
                 <S.MessageInfo>
-                    <S.MessageInfoImg src={"people.PNG"} />
+                    <S.MessageInfoImg src={`${process.env.STATIC_SOURCE}/people.PNG`} />
                 </S.MessageInfo>
                 <S.MsgOwnerContent>
                     <S.MsgOwnerContentP>
@@ -29,7 +29,7 @@ const Messege = ({ responseMsg }: MessageProps) => {
             </S.MsgOwner>
                 : <S.Message>
                     <S.MessageInfo>
-                        <S.MessageInfoImg src={"people.PNG"} />
+                        <S.MessageInfoImg src={`${process.env.STATIC_SOURCE}/people.PNG`} />
                     </S.MessageInfo>
                     <S.MessageContent>
                         <S.MsgContentP>
