@@ -12,6 +12,9 @@ import TransactionCreateModal from "./modal/TransactionCreateModal";
 import TransactionGetByGroupModal from "./modal/TransactionGetByGroupModal";
 import * as S from "@/components/main/styled/ModalContainer.styled";
 import ChannelNavigateModal from "./modal/ChannelNavigateModal";
+import ReservationCreateModal from "./modal/ReservationCreateModal";
+import ReservationGetByGroupModal from "./modal/ReservationGetByGroupModal";
+import PersonalWalletCreateMoneyModal from "./modal/PersonalWalletCreateMoneyModal";
 
 const ModalContainer = () => {
     return (
@@ -23,12 +26,15 @@ const ModalContainer = () => {
             <ChannelSearchModal eventName="ChannelSearchModal"/>
             <ChannelNavigateModal eventName="ChannelNavigateModal"/>
             <PersonalWalletCreateModal eventName="PersonalWalletModal"/>
+            <PersonalWalletCreateMoneyModal eventName="PersonalWalletCreateMoneyModal"/>
             <GroupWalletCreateModal eventName="GroupWalletCreateModal"/>
             <GroupWalletListModal eventName="GroupWalletListModal"/>
             <GroupWalletParticipantModal eventName="GroupWalletParticipantModal"/>
             <GroupWalletGetModal eventName="GroupWalletGetModal"/>
             <TransactionCreateModal eventName="TransactionCreateModal"/>
             <TransactionGetByGroupModal eventName="TransactionGetByGroupModal"/>
+            <ReservationCreateModal eventName="ReservationCreateModal"/>
+            <ReservationGetByGroupModal eventName="ReservationGetByGroupModal"/>
         </S.ModalContainer>
     )
 }

@@ -180,4 +180,39 @@ export const ButtonEvent = {
                 setLogContent((v) => v.concat(logContentList));
             });
     },
-}; 
+    getReservationByPersonalWallet: async (setLogContent: SetterOrUpdater<logType[]>, eventName: string) => {
+        const logContentList: logType[] = [];
+        logContentList.push({
+            type: logTypeConstant.yellow,
+            content: line,
+        })
+        logContentList.push({
+            type: logTypeConstant.blue,
+            content: `${eventName} 실행`,
+        })
+
+        await devInstance.get(`/wallet/user/reservation`)
+            .then((res) => {
+                logContentList.push({
+                    type: logTypeConstant.blue,
+                    content: `${eventName} 결과`,
+                })
+                logContentList.push({
+                    type: logTypeConstant.white,
+                    content: `${JSON.stringify(res.data)}`,
+                })
+                setLogContent((v) => v.concat(logContentList));
+            })
+            .catch((e) => {
+                logContentList.push({
+                    type: logTypeConstant.red,
+                    content: `${eventName} 결과`,
+                })
+                logContentList.push({
+                    type: logTypeConstant.white,
+                    content: `${e.response.data.message}`,
+                })
+                setLogContent((v) => v.concat(logContentList));
+            });
+    },
+};

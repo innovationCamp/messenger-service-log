@@ -93,6 +93,16 @@ const ButtonContainer = () => {
                 }}>
                     개인 Wallet 내역
                 </SBtn.btnPushBG>
+                <SBtn.btnPushBG onClick={(e: any) => {
+                    ButtonEvent.getReservationByPersonalWallet(setLogContent, "개인 Wallet 예약 내역");
+                }}>
+                    개인 Wallet 예약 내역
+                </SBtn.btnPushBG>
+                <SBtn.btnPushBG onClick={() => {
+                    openModal(modalKeyConstance.personalWalletCreateMoney);
+                }}>
+                    개인 Wallet 입금
+                </SBtn.btnPushBG>
                 <SBtn.btnPushBG> 1 </SBtn.btnPushBG>
                 <SBtn.btnPushBG> 2 </SBtn.btnPushBG>
                 <SBtn.btnPushBG> 3 </SBtn.btnPushBG>
@@ -129,6 +139,11 @@ const ButtonContainer = () => {
                 }}>
                     그룹 Wallet 내역
                 </SBtn.btnPushBG>
+                <SBtn.btnPushBG onClick={(e: any) => {
+                    openModal(modalKeyConstance.reservationGetByGroupWallet);
+                }}>
+                    그룹 Wallet 예약 내역
+                </SBtn.btnPushBG>
                 <SBtn.btnPushBG> 1 </SBtn.btnPushBG>
                 <SBtn.btnPushBG> 2 </SBtn.btnPushBG>
                 <SBtn.btnPushBG> 3 </SBtn.btnPushBG>
@@ -141,6 +156,11 @@ const ButtonContainer = () => {
                     openModal(modalKeyConstance.transactionCreate);
                 }}>
                     송금
+                </SBtn.btnPushBG>
+                <SBtn.btnPushBG onClick={() => {
+                    openModal(modalKeyConstance.reservationCreate);
+                }}>
+                    예약
                 </SBtn.btnPushBG>
             </S.FlexBox>
         </S.ButtonContainer >

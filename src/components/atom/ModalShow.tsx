@@ -9,12 +9,15 @@ export const modalKeyConstance = {
     channelSearch: "channelSearch",
     channelNavigate: "channelNavigate",
     personalWalletCreate: "personalWalletCreate",
-    groupWalletCreate: "groupWalletCreate", 
+    personalWalletCreateMoney: "personalWalletCreateMoney",
+    groupWalletCreate: "groupWalletCreate",
     groupWalletListByChannel: "groupWalletListByChannel",
     groupWalletParticipant: "groupWalletParticipant",
     groupWalletGetByGroupWallet: "groupWalletGetByGroupWallet",
     transactionCreate: "transactionCreate",
     transactionGetByGroupWallet: "transactionGetByGroupWallet",
+    reservationCreate: "reservationCreate",
+    reservationGetByGroupWallet: "reservationGetByGroupWallet"
 }
 
 interface initModalType {
@@ -26,12 +29,15 @@ interface initModalType {
     channelSearch: boolean;
     channelNavigate: boolean;
     personalWalletCreate: boolean;
+    personalWalletCreateMoney: boolean;
     groupWalletCreate: boolean;
     groupWalletListByChannel: boolean;
     groupWalletParticipant: boolean;
     groupWalletGetByGroupWallet: boolean;
     transactionCreate: boolean;
     transactionGetByGroupWallet: boolean;
+    reservationCreate: boolean;
+    reservationGetByGroupWallet: boolean;
 }
 
 const initModal: initModalType = {
@@ -42,12 +48,15 @@ const initModal: initModalType = {
     channelSearch: false,
     channelNavigate: false,
     personalWalletCreate: false,
+    personalWalletCreateMoney: false,
     groupWalletCreate: false,
     groupWalletListByChannel: false,
     groupWalletParticipant: false,
     groupWalletGetByGroupWallet: false,
     transactionCreate: false,
     transactionGetByGroupWallet: false,
+    reservationCreate: false,
+    reservationGetByGroupWallet: false,
 }
 
 export interface logType {
