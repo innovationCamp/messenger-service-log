@@ -38,7 +38,7 @@ jobs:
       # build and test the apps
       - name: build
         run: |
-          echo -e "${{ secrets.CLIENT_PRODUCT2 }}" > .env.production
+          echo -e "${{ secrets.CLIENT_PRODUCT3 }}" > .env.production
           npm run build
 
       # Docker image 생성 및 dockerhub에 push
