@@ -12,6 +12,8 @@ RUN npm install --only=production
 FROM nginx:alpine AS release
 # Copy over the built files from your repo
 COPY ./dist/ /usr/share/nginx/html
-# If there's any configuration you need to do for nginx, do it here.
+# Copy the Nginx configuration
+COPY default.conf /etc/nginx/conf.d/default.conf
+# Expose port
 EXPOSE 3000
 CMD ["nginx", "-g", "daemon off;"]
