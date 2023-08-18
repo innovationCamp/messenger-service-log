@@ -1,16 +1,17 @@
-FROM node:18-alpine AS development
-ENV NODE_ENV development
-ENV PORT 3000   
-# Setting the port environment variable
-# Add a work directory
+# ---- Base Node ----
+FROM node:18-alpine AS base
 WORKDIR /app
-# Cache and Install dependencies
-COPY package.json .
-COPY package-lock.json .
-RUN npm install
-# Copy app files
-COPY . .
-# Expose port
-EXPOSE 3000
-# Start the app
-CMD [ "npm", "start" ]
+COPY package*.json ./
+
+# ---- Dependencies ----
+FROM base AS dependencies
+# We're only installing production dependencies here.
+RUN npm install --only=production
+
+# ---- Release ----
+FROM nginx:alpine AS release
+# Copy over the built files from your repo
+COPY ./dist/ /usr/share/nginx/html
+# If there's any configuration you need to do for nginx, do it here.
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
