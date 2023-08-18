@@ -38,8 +38,7 @@ jobs:
       # build and test the apps
       - name: build
         run: |
-          sudo cat > .env.production
-          echo "${{ secrets.CLIENT_PRODUCT }}"
+          echo -e "${{ secrets.CLIENT_PRODUCT2 }}" > .env.product
           npm run build
 
       # Docker image 생성 및 dockerhub에 push
