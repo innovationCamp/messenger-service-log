@@ -20,3 +20,10 @@ export interface jwtDecoded {
     exp: number;
     iat:number;
 }
+
+export interface sendMsgDto {
+    type: string;
+    channelId: string;
+    senderId: string;
+    message: string;
+}
