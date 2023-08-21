@@ -2,54 +2,67 @@ import { devInstance } from "@/api/axios";
 import * as S from "@/components/chat/styled/Chat.styled";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { jwtDecoded, responseMsgDto, sendMsgDto } from "./interface";
+import { jwtDecoded, msgType, responseMsgDto, sendMsgDto } from "./interface";
 import Message from "./Message";
+import { Client, IMessage } from "@stomp/stompjs";
 import * as StompJs from '@stomp/stompjs';
 import { stompInstance } from "@/api/stomp";
 import { useRecoilState } from "recoil";
 import { userState } from "../atom/User";
 
-
 const Messeges = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const [msgArr, setMsgArr] = useState<responseMsgDto[]>([]);
     const [user, setUser] = useRecoilState<jwtDecoded>(userState);
-
+    const [msgArr, setMsgArr] = useState<responseMsgDto[]>([]);
+    const [client, setClient] = useState<Client | null>(null);
+    const [inputMsg, setInputMsg] = useState("");
     const navigate = useNavigate();
 
     const chatRef = useRef<HTMLDivElement>(null);
 
+    const publishHandler = (msg: sendMsgDto) => {
+        client?.publish({
+            destination: '/pub/chat/message',
+            body: JSON.stringify(msg),
+        });
+    }
+    
+    const sendHandler = async () => {
+        const sendMsg: sendMsgDto = {
+            type: msgType.TALK,
+            channelId: searchParams.get("channelId")!,
+            senderId: user.sub,
+            senderName: user.nickname,
+            message: inputMsg
+        };
+        publishHandler(sendMsg);
+        setInputMsg("");
+    }
+
+    const keyDownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            sendHandler();
+        }
+    }
+
+    const connectHandler = () => {
+        const channelId = searchParams.get("channelId");
+        if (channelId) {
+            let stomp = stompInstance();
+            stomp.onConnect = (frame) => {
+                stomp.subscribe(`/sub/chat/room/${channelId}`, (message) => {
+                    console.log("###########", message.body);
+                    const msg: responseMsgDto = JSON.parse(message.body);
+                    setMsgArr((preMsgArr) => [...preMsgArr, msg])
+                });
+            }
+            setClient(stomp);
+        } else return navigate("/no-page");
+    }
+
     useEffect(() => {
         console.log("@@@ : Message useEffect");
-        // const channelId = searchParams.get("channelId");
-        // if (channelId) {
-        //     const testObj: sendMsgDto = {
-        //         type : "TALK",
-        //         channelId: channelId,
-        //         senderId: user.sub,
-        //         message: "test",
-        //     }
-
-        //     const client = stompInstance(channelId);
-        //     client.activate();
-
-        //     // client.publish({
-        //     //     destination: '/pub/chat/message',
-        //     //     body: JSON.stringify(testObj),
-        //     // });
-        // } else return navigate("/no-page");
-
-        // const channelId = searchParams.get("channelId") ? 
-
-        // const client = stompInstance(channelId);
-
-        // stompInstance.activate();
-        // stompInstance.subscribe(
-        //     `/sub/chat/room/${searchParams.get("channelId")}`,
-        //     (body) => {
-        //         const JsonBody = JSON.parse(body.body);
-        //         console.log(JsonBody);
-        //     })
+        connectHandler();
 
         devInstance.get(`/channel-content/${searchParams.get("channelId")}`)
             .then((res) => {
@@ -65,6 +78,10 @@ const Messeges = () => {
         chatRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [msgArr])
 
+    useEffect(() => {
+        client?.activate();
+    }, [client])
+
     return (
         <>
             <S.Messages>
@@ -75,6 +92,20 @@ const Messeges = () => {
                 }
                 <div ref={chatRef}></div>
             </S.Messages>
+            <S.InputDiv>
+                <S.Input
+                    type="text"
+                    value={inputMsg}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputMsg(e.target.value)}
+                    onKeyDown={keyDownHandler}
+                />
+                <S.Send>
+                    <S.SendBtn
+                        onClick={sendHandler}>
+                        Send
+                    </S.SendBtn>
+                </S.Send>
+            </S.InputDiv>
         </>
     )
 }
