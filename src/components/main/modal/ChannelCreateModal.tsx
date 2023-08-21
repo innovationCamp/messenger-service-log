@@ -5,6 +5,8 @@ import * as S from "@/components/main/styled/Modal.styled";
 import { devInstance } from "@/api/axios";
 import { line } from "@/components/constant/constant";
 import { modalProps } from "../interface";
+import { jwtDecoded } from "@/components/chat/interface";
+import { userState } from "@/components/atom/User";
 
 interface channelCreateDto {
     channelName: string,

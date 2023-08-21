@@ -4,17 +4,20 @@ import { logContentState, logType, logTypeConstant, modalState } from "@/compone
 import * as S from "@/components/main/styled/Modal.styled";
 import { devInstance } from "@/api/axios";
 import { ACCESS_HEADER, line, SET_ACCESS_HEADER } from "@/components/constant/constant";
-import { setCookie } from "@/components/util/CookieUtil";
+import { getCookie, getUser, setCookie } from "@/components/util/CookieUtil";
 import { modalProps } from "../interface";
+import { jwtDecoded } from "@/components/chat/interface";
+import { userState } from "@/components/atom/User";
 
 interface loginDto {
     email: string,
     password: string,
 }
 
-const LoginModal = ({eventName}: modalProps) => {
+const LoginModal = ({ eventName }: modalProps) => {
     const [modalShow, setModalShow] = useRecoilState(modalState);
     const [logContent, setLogContent] = useRecoilState(logContentState);
+    const [user, setUser] = useRecoilState<jwtDecoded>(userState);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -56,6 +59,7 @@ const LoginModal = ({eventName}: modalProps) => {
 
                 let token: string = res.headers[ACCESS_HEADER].replaceAll("%20", " ");
                 setCookie(SET_ACCESS_HEADER, token);
+                setUser(getUser());
 
                 logContentList.push({
                     type: logTypeConstant.blue,
@@ -80,6 +84,10 @@ const LoginModal = ({eventName}: modalProps) => {
                 setLogContent((v) => v.concat(logContentList));
             });
     };
+
+    useEffect(() => {
+        console.log(user);
+    }, [user]);
 
     const handleOverlayClick = () => {
         closeModal();

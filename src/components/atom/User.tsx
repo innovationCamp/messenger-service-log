@@ -1,7 +1,7 @@
 import { atom } from "recoil";
 import { jwtDecoded } from "../chat/interface";
 
-const jwtDecodedDefault: jwtDecoded = {
+export const jwtDecodedDefault: jwtDecoded = {
     sub: "0",
     email: "",
     nickname: "",

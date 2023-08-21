@@ -5,12 +5,14 @@ export interface Msg {
 
 export interface responseMsgDto {
     id: number;
-    callOutContentId: number | null;
-    text: string;
-    createdAt: string;
+    userId: string;
     userEmail: string;
     userName: string;
+    channelId: string;
+    callOutContentId: number | null;
+    createdAt: string;
     notReadCount: number | null;
+    text: string;
 }
 
 export interface jwtDecoded {
@@ -18,5 +20,19 @@ export interface jwtDecoded {
     email: string;
     nickname: string;
     exp: number;
-    iat:number;
+    iat: number;
+}
+
+export enum msgType {
+    ENTER = "ENTER",
+    TALK = "TALK",
+    CALLOUT = "CALLOUT",
+}
+
+export interface sendMsgDto {
+    type: msgType;
+    channelId: string;
+    senderId: string;
+    senderName: string;
+    message: string;
 }
