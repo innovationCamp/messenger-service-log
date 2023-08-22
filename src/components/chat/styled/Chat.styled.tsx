@@ -79,7 +79,7 @@ export const MessageContent = styled.div`
 max-width: 80%;
 display: flex;
 flex-direction: column;
-gap: 10px;
+/* gap: 10px; */
 `
 
 export const MsgContentP = styled.p`
@@ -88,6 +88,7 @@ padding: 10px 20px;
 border-radius: 0px 10px 10px 10px;
 max-width: max-content;
 white-space: pre-wrap;
+margin: 1em 0 0 0;
 `
 
 export const MsgOwner = styled(Message)`
@@ -117,10 +118,11 @@ align-items: center;
 justify-content: space-between;
 `
 
-export const Input = styled.textarea`
+export const TextArea = styled.textarea`
 width: 100%;
 border: none;
 outline: none;
+resize: none;
 background-color: #535353;
 color: #ffffff;
 font-size: 18px;

@@ -5,10 +5,10 @@ import { userState } from "../atom/User";
 import { jwtDecoded, responseMsgDto } from "./interface";
 
 interface MessageProps {
-    responseMsg: responseMsgDto;
+    responseMsgArr: responseMsgDto[];
 }
 
-const Messege = ({ responseMsg }: MessageProps) => {
+const Messege = ({ responseMsgArr }: MessageProps) => {
     const [user, setUser] = useRecoilState<jwtDecoded>(userState);
 
     useEffect(() => {
@@ -23,30 +23,38 @@ const Messege = ({ responseMsg }: MessageProps) => {
 
     return (
         <>
-            {ownerCheck(responseMsg, user) ? <S.MsgOwner>
-                <S.MessageInfo>
-                    <S.MessageInfoImg src={`${process.env.STATIC_SOURCE}/people.PNG`} />
-                    <S.MsgOwnerInfoP>
-                        {responseMsg.userName}
-                    </S.MsgOwnerInfoP>
-                </S.MessageInfo>
-                <S.MsgOwnerContent>
-                    <S.MsgOwnerContentP>
-                        {responseMsg.text}
-                    </S.MsgOwnerContentP>
-                </S.MsgOwnerContent>
-            </S.MsgOwner>
-                : <S.Message>
+            {
+                ownerCheck(responseMsgArr[0], user) ? <S.MsgOwner>
+                    <S.MessageInfo>
+                        <S.MessageInfoImg src={`${process.env.STATIC_SOURCE}/people.PNG`} />
+                        <S.MsgOwnerInfoP>
+                            {responseMsgArr[0].userName}
+                        </S.MsgOwnerInfoP>
+                    </S.MessageInfo>
+                    <S.MsgOwnerContent>
+                        {responseMsgArr.map((responesMsg, idx) => {
+                            return (
+                                <S.MsgOwnerContentP key={idx}>
+                                    {responesMsg.text}
+                                </S.MsgOwnerContentP>
+                            )
+                        })}
+                    </S.MsgOwnerContent>
+                </S.MsgOwner> : <S.Message>
                     <S.MessageInfo>
                         <S.MessageInfoImg src={`${process.env.STATIC_SOURCE}/people.PNG`} />
                         <S.MessageInfoP>
-                            {responseMsg.userName}
+                            {responseMsgArr[0].userName}
                         </S.MessageInfoP>
                     </S.MessageInfo>
                     <S.MessageContent>
-                        <S.MsgContentP>
-                            {responseMsg.text}
-                        </S.MsgContentP>
+                        {responseMsgArr.map((responesMsg, idx) => {
+                            return (
+                                <S.MsgOwnerContentP key={idx}>
+                                    {responesMsg.text}
+                                </S.MsgOwnerContentP>
+                            )
+                        })}
                     </S.MessageContent>
                 </S.Message>
             }
