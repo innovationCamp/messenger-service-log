@@ -119,6 +119,7 @@ justify-content: space-between;
 `
 
 export const TextArea = styled.textarea`
+height: 100%;
 width: 100%;
 border: none;
 outline: none;

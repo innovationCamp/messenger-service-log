@@ -8,6 +8,9 @@ const Test = () => {
     return (
         <>
             <input value={t} onChange={(e: any) => setT(e.target.value)}></input>
+            <textarea>
+                
+            </textarea>
             <Test1 />
             <Test2 />
         </>

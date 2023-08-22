@@ -9,14 +9,14 @@ interface MessageProps {
 }
 
 const Messege = ({ responseMsgArr }: MessageProps) => {
+    console.log("Message 재실행 확인");
     const [user, setUser] = useRecoilState<jwtDecoded>(userState);
 
     useEffect(() => {
-        console.log("재렌더 확인");
+        console.log("Message 재렌더 확인");
     }, [])
 
     const ownerCheck = (msg: responseMsgDto, user: jwtDecoded): boolean => {
-        console.log("재실행 확인");
         if (msg.userId == user.sub && msg.userEmail === user.email && msg.userName === user.nickname) return true;
         return false;
     }
@@ -50,9 +50,9 @@ const Messege = ({ responseMsgArr }: MessageProps) => {
                     <S.MessageContent>
                         {responseMsgArr.map((responesMsg, idx) => {
                             return (
-                                <S.MsgOwnerContentP key={idx}>
+                                <S.MsgContentP key={idx}>
                                     {responesMsg.text}
-                                </S.MsgOwnerContentP>
+                                </S.MsgContentP>
                             )
                         })}
                     </S.MessageContent>

@@ -1,6 +1,6 @@
 import { devInstance } from "@/api/axios";
 import * as S from "@/components/chat/styled/Chat.styled";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { jwtDecoded, msgType, responseMsgDto, sendMsgDto } from "./interface";
 import Message from "./Message";
@@ -22,6 +22,7 @@ const Messeges = () => {
     const chatRef = useRef<HTMLDivElement>(null);
 
     const publishHandler = (msg: sendMsgDto) => {
+        console.log("publishHandler");
         client?.publish({
             destination: '/pub/chat/message',
             body: JSON.stringify(msg),
@@ -30,6 +31,7 @@ const Messeges = () => {
 
     //e: React.KeyboardEvent<HTMLTextAreaElement>
     const sendHandler = async () => {
+        console.log("sendHandler");
         if (inputMsg.trim() == "") {
             setInputMsg(""); return;
         }
@@ -45,6 +47,7 @@ const Messeges = () => {
     }
 
     const keyDownHandler = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        // console.log("keyDownHandler");
         if (e.key === "Enter") {
             if (!e.shiftKey) {
                 sendHandler();
@@ -54,6 +57,7 @@ const Messeges = () => {
     }
 
     const connectHandler = () => {
+        console.log("connectHandler");
         const channelId = searchParams.get("channelId");
         if (channelId) {
             let stomp = stompInstance();
