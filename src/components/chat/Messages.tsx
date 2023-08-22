@@ -1,19 +1,20 @@
 import { devInstance } from "@/api/axios";
 import * as S from "@/components/chat/styled/Chat.styled";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { jwtDecoded, msgType, responseMsgDto, sendMsgDto } from "./interface";
 import Message from "./Message";
 import { Client, IMessage } from "@stomp/stompjs";
-import * as StompJs from '@stomp/stompjs';
 import { stompInstance } from "@/api/stomp";
 import { useRecoilState } from "recoil";
 import { userState } from "../atom/User";
 
 const Messeges = () => {
+    console.log("Messeges 재실행 확인");
     const [searchParams, setSearchParams] = useSearchParams();
     const [user, setUser] = useRecoilState<jwtDecoded>(userState);
     const [msgArr, setMsgArr] = useState<responseMsgDto[]>([]);
+    const [reMsgArr, setReMsgArr] = useState<responseMsgDto[][]>([]);
     const [client, setClient] = useState<Client | null>(null);
     const [inputMsg, setInputMsg] = useState("");
     const navigate = useNavigate();
@@ -21,13 +22,19 @@ const Messeges = () => {
     const chatRef = useRef<HTMLDivElement>(null);
 
     const publishHandler = (msg: sendMsgDto) => {
+        console.log("publishHandler");
         client?.publish({
             destination: '/pub/chat/message',
             body: JSON.stringify(msg),
         });
     }
-    
+
+    //e: React.KeyboardEvent<HTMLTextAreaElement>
     const sendHandler = async () => {
+        console.log("sendHandler");
+        if (inputMsg.trim() == "") {
+            setInputMsg(""); return;
+        }
         const sendMsg: sendMsgDto = {
             type: msgType.TALK,
             channelId: searchParams.get("channelId")!,
@@ -39,13 +46,18 @@ const Messeges = () => {
         setInputMsg("");
     }
 
-    const keyDownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const keyDownHandler = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        // console.log("keyDownHandler");
         if (e.key === "Enter") {
-            sendHandler();
+            if (!e.shiftKey) {
+                sendHandler();
+                e.preventDefault();
+            }
         }
     }
 
     const connectHandler = () => {
+        console.log("connectHandler");
         const channelId = searchParams.get("channelId");
         if (channelId) {
             let stomp = stompInstance();
@@ -75,8 +87,29 @@ const Messeges = () => {
     }, []);
 
     useEffect(() => {
-        chatRef.current?.scrollIntoView({ behavior: "smooth" });
+        if (msgArr.length != 0) {
+            const resArr: responseMsgDto[][] = [];
+            let cacheArr: responseMsgDto[] = [];
+            msgArr.reduce((acc, cur, idx) => {
+                if (cacheArr.length == 0) cacheArr = [acc];
+                if (acc.userId != cur.userId) {
+                    resArr.push(cacheArr);
+                    cacheArr = [];
+                }
+                cacheArr.push(cur);
+                if (idx == msgArr.length - 1) {
+                    resArr.push(cacheArr);
+                }
+                return cur;
+            });
+            // console.log(resArr);
+            setReMsgArr(resArr);
+        }
     }, [msgArr])
+
+    useEffect(() => {
+        chatRef.current?.scrollIntoView({ behavior: "auto" });
+    }, [reMsgArr])
 
     useEffect(() => {
         client?.activate();
@@ -86,17 +119,16 @@ const Messeges = () => {
         <>
             <S.Messages>
                 {
-                    msgArr.map((v: responseMsgDto, k) => {
-                        return <Message key={k} responseMsg={v} />
+                    reMsgArr.map((v: responseMsgDto[], idx) => {
+                        return <Message key={idx} responseMsgArr={v} />
                     })
                 }
                 <div ref={chatRef}></div>
             </S.Messages>
             <S.InputDiv>
-                <S.Input
-                    type="text"
+                <S.TextArea
                     value={inputMsg}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputMsg(e.target.value)}
+                    onChange={(e: any) => setInputMsg(e.target.value)}
                     onKeyDown={keyDownHandler}
                 />
                 <S.Send>

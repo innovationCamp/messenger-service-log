@@ -5,42 +5,68 @@ import { userState } from "../atom/User";
 import { jwtDecoded, responseMsgDto } from "./interface";
 
 interface MessageProps {
-    responseMsg: responseMsgDto;
+    responseMsgArr: responseMsgDto[];
 }
 
-const Messege = ({ responseMsg }: MessageProps) => {
+const Messege = ({ responseMsgArr }: MessageProps) => {
+    console.log("Message 재실행 확인");
     const [user, setUser] = useRecoilState<jwtDecoded>(userState);
 
     useEffect(() => {
-        console.log("재렌더 확인");
+        console.log("Message 재렌더 확인");
     }, [])
 
     const ownerCheck = (msg: responseMsgDto, user: jwtDecoded): boolean => {
-        console.log("재실행 확인");
         if (msg.userId == user.sub && msg.userEmail === user.email && msg.userName === user.nickname) return true;
         return false;
     }
 
     return (
         <>
-            {ownerCheck(responseMsg, user) ? <S.MsgOwner>
-                <S.MessageInfo>
-                    <S.MessageInfoImg src={`${process.env.STATIC_SOURCE}/people.PNG`} />
-                </S.MessageInfo>
-                <S.MsgOwnerContent>
-                    <S.MsgOwnerContentP>
-                        {responseMsg.text}
-                    </S.MsgOwnerContentP>
-                </S.MsgOwnerContent>
-            </S.MsgOwner>
-                : <S.Message>
+            {
+                ownerCheck(responseMsgArr[0], user) ? <S.MsgOwner>
                     <S.MessageInfo>
                         <S.MessageInfoImg src={`${process.env.STATIC_SOURCE}/people.PNG`} />
+                        <S.MsgOwnerInfoP>
+                            {responseMsgArr[0].userName}
+                        </S.MsgOwnerInfoP>
+                    </S.MessageInfo>
+                    <S.MsgOwnerContent>
+                        {responseMsgArr.map((responesMsg, idx) => {
+                            const createAt = new Date(responesMsg.createdAt);
+                            return (
+                                <S.ContentPTime>
+                                    <S.MessageTime>
+                                        {`${createAt.getHours()}-${createAt.getMinutes()}`}
+                                    </S.MessageTime>
+                                    <S.MsgOwnerContentP key={idx}>
+                                        {responesMsg.text}
+                                    </S.MsgOwnerContentP>
+                                </S.ContentPTime>
+                            )
+                        })}
+                    </S.MsgOwnerContent>
+                </S.MsgOwner> : <S.Message>
+                    <S.MessageInfo>
+                        <S.MessageInfoImg src={`${process.env.STATIC_SOURCE}/people.PNG`} />
+                        <S.MessageInfoP>
+                            {responseMsgArr[0].userName}
+                        </S.MessageInfoP>
                     </S.MessageInfo>
                     <S.MessageContent>
-                        <S.MsgContentP>
-                            {responseMsg.text}
-                        </S.MsgContentP>
+                        {responseMsgArr.map((responesMsg, idx) => {
+                            const createAt = new Date(responesMsg.createdAt);
+                            return (
+                                <S.ContentPTime>
+                                    <S.MsgContentP key={idx}>
+                                        {responesMsg.text}
+                                    </S.MsgContentP>
+                                    <S.MessageTime>
+                                        {`${createAt.getHours()}-${createAt.getMinutes()}`}
+                                    </S.MessageTime>
+                                </S.ContentPTime>
+                            )
+                        })}
                     </S.MessageContent>
                 </S.Message>
             }

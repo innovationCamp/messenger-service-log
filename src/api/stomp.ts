@@ -9,7 +9,7 @@ const stompInstance = (): Client => {
             passcode: 'password',
         },
         debug: function (str) {
-            console.log("!!!", str);
+            // console.log("!!!", str);
         },
         reconnectDelay: 5000, //자동 재 연결
         heartbeatIncoming: 4000,

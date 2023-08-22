@@ -8,6 +8,10 @@ const Test = () => {
     return (
         <>
             <input value={t} onChange={(e: any) => setT(e.target.value)}></input>
+            <textarea>
+                
+            </textarea>
+            <p style={{textAlign:"right"}}>asdfasfd</p>
             <Test1 />
             <Test2 />
         </>

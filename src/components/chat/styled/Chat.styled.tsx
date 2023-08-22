@@ -67,11 +67,22 @@ border-radius: 50%;
 object-fit: cover;
 `
 
+export const MessageInfoP = styled.p`
+max-width: 100px;
+margin: 0;
+text-align: left;
+overflow-wrap: break-word;
+font-size: small;
+`
+
 export const MessageContent = styled.div`
 max-width: 80%;
 display: flex;
 flex-direction: column;
-gap: 10px;
+`
+
+export const ContentPTime = styled.div`
+    display: flex;
 `
 
 export const MsgContentP = styled.p`
@@ -79,10 +90,26 @@ background-color: white;
 padding: 10px 20px;
 border-radius: 0px 10px 10px 10px;
 max-width: max-content;
+white-space: pre-wrap;
+margin: 1em 0 0 0;
+`
+
+export const MessageTime = styled(MsgContentP)`
+background-color: rgb(31, 28, 28);
+color: #535353;
+border: none;
+padding: 20px 4px 0 4px;
+display: flex;
+align-items: flex-end;
+font-size: small;
 `
 
 export const MsgOwner = styled(Message)`
 flex-direction: row-reverse;
+`
+
+export const MsgOwnerInfoP = styled(MessageInfoP)`
+text-align: right;
 `
 
 export const MsgOwnerContent = styled(MessageContent)`
@@ -104,10 +131,12 @@ align-items: center;
 justify-content: space-between;
 `
 
-export const Input = styled.input`
+export const TextArea = styled.textarea`
+height: 100%;
 width: 100%;
 border: none;
 outline: none;
+resize: none;
 background-color: #535353;
 color: #ffffff;
 font-size: 18px;
