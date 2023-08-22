@@ -108,7 +108,7 @@ const Messeges = () => {
     }, [msgArr])
 
     useEffect(() => {
-        chatRef.current?.scrollIntoView({ behavior: "smooth" });
+        chatRef.current?.scrollIntoView({ behavior: "auto" });
     }, [reMsgArr])
 
     useEffect(() => {

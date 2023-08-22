@@ -33,10 +33,16 @@ const Messege = ({ responseMsgArr }: MessageProps) => {
                     </S.MessageInfo>
                     <S.MsgOwnerContent>
                         {responseMsgArr.map((responesMsg, idx) => {
+                            const createAt = new Date(responesMsg.createdAt);
                             return (
-                                <S.MsgOwnerContentP key={idx}>
-                                    {responesMsg.text}
-                                </S.MsgOwnerContentP>
+                                <S.ContentPTime>
+                                    <S.MessageTime>
+                                        {`${createAt.getHours()}-${createAt.getMinutes()}`}
+                                    </S.MessageTime>
+                                    <S.MsgOwnerContentP key={idx}>
+                                        {responesMsg.text}
+                                    </S.MsgOwnerContentP>
+                                </S.ContentPTime>
                             )
                         })}
                     </S.MsgOwnerContent>
@@ -49,10 +55,16 @@ const Messege = ({ responseMsgArr }: MessageProps) => {
                     </S.MessageInfo>
                     <S.MessageContent>
                         {responseMsgArr.map((responesMsg, idx) => {
+                            const createAt = new Date(responesMsg.createdAt);
                             return (
-                                <S.MsgContentP key={idx}>
-                                    {responesMsg.text}
-                                </S.MsgContentP>
+                                <S.ContentPTime>
+                                    <S.MsgContentP key={idx}>
+                                        {responesMsg.text}
+                                    </S.MsgContentP>
+                                    <S.MessageTime>
+                                        {`${createAt.getHours()}-${createAt.getMinutes()}`}
+                                    </S.MessageTime>
+                                </S.ContentPTime>
                             )
                         })}
                     </S.MessageContent>

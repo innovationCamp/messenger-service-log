@@ -11,6 +11,7 @@ const Test = () => {
             <textarea>
                 
             </textarea>
+            <p style={{textAlign:"right"}}>asdfasfd</p>
             <Test1 />
             <Test2 />
         </>
