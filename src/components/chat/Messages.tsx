@@ -11,6 +11,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "../atom/User";
 
 const Messeges = () => {
+    console.log("Messeges 재실행 확인");
     const [searchParams, setSearchParams] = useSearchParams();
     const [user, setUser] = useRecoilState<jwtDecoded>(userState);
     const [msgArr, setMsgArr] = useState<responseMsgDto[]>([]);
@@ -26,8 +27,12 @@ const Messeges = () => {
             body: JSON.stringify(msg),
         });
     }
-    
+
+    //e: React.KeyboardEvent<HTMLTextAreaElement>
     const sendHandler = async () => {
+        if (inputMsg.trim() == "") {
+            setInputMsg(""); return;
+        }
         const sendMsg: sendMsgDto = {
             type: msgType.TALK,
             channelId: searchParams.get("channelId")!,
@@ -39,7 +44,7 @@ const Messeges = () => {
         setInputMsg("");
     }
 
-    const keyDownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const keyDownHandler = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === "Enter") {
             sendHandler();
         }
@@ -94,9 +99,9 @@ const Messeges = () => {
             </S.Messages>
             <S.InputDiv>
                 <S.Input
-                    type="text"
+                    // type="text"
                     value={inputMsg}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputMsg(e.target.value)}
+                    onChange={(e: any) => setInputMsg(e.target.value)}
                     onKeyDown={keyDownHandler}
                 />
                 <S.Send>

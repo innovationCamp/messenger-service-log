@@ -26,6 +26,9 @@ const Messege = ({ responseMsg }: MessageProps) => {
             {ownerCheck(responseMsg, user) ? <S.MsgOwner>
                 <S.MessageInfo>
                     <S.MessageInfoImg src={`${process.env.STATIC_SOURCE}/people.PNG`} />
+                    <S.MsgOwnerInfoP>
+                        {responseMsg.userName}
+                    </S.MsgOwnerInfoP>
                 </S.MessageInfo>
                 <S.MsgOwnerContent>
                     <S.MsgOwnerContentP>
@@ -36,6 +39,9 @@ const Messege = ({ responseMsg }: MessageProps) => {
                 : <S.Message>
                     <S.MessageInfo>
                         <S.MessageInfoImg src={`${process.env.STATIC_SOURCE}/people.PNG`} />
+                        <S.MessageInfoP>
+                            {responseMsg.userName}
+                        </S.MessageInfoP>
                     </S.MessageInfo>
                     <S.MessageContent>
                         <S.MsgContentP>

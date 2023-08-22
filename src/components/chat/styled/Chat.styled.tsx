@@ -67,6 +67,14 @@ border-radius: 50%;
 object-fit: cover;
 `
 
+export const MessageInfoP = styled.p`
+max-width: 100px;
+margin: 0;
+text-align: left;
+overflow-wrap: break-word;
+font-size: small;
+`
+
 export const MessageContent = styled.div`
 max-width: 80%;
 display: flex;
@@ -79,10 +87,15 @@ background-color: white;
 padding: 10px 20px;
 border-radius: 0px 10px 10px 10px;
 max-width: max-content;
+white-space: pre-wrap;
 `
 
 export const MsgOwner = styled(Message)`
 flex-direction: row-reverse;
+`
+
+export const MsgOwnerInfoP = styled(MessageInfoP)`
+text-align: right;
 `
 
 export const MsgOwnerContent = styled(MessageContent)`
@@ -104,7 +117,7 @@ align-items: center;
 justify-content: space-between;
 `
 
-export const Input = styled.input`
+export const Input = styled.textarea`
 width: 100%;
 border: none;
 outline: none;
