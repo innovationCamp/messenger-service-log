@@ -82,7 +82,7 @@ flex-direction: column;
 `
 
 export const ContentPTime = styled.div`
-    display: flex;
+display: flex;
 `
 
 export const MsgContentP = styled.p`
@@ -92,6 +92,7 @@ border-radius: 0px 10px 10px 10px;
 max-width: max-content;
 white-space: pre-wrap;
 margin: 1em 0 0 0;
+cursor: pointer;
 `
 
 export const MessageTime = styled(MsgContentP)`
@@ -102,6 +103,7 @@ padding: 20px 4px 0 4px;
 display: flex;
 align-items: flex-end;
 font-size: small;
+cursor: auto;
 `
 
 export const MsgOwner = styled(Message)`

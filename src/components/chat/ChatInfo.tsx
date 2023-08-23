@@ -1,6 +1,6 @@
 import { devInstance } from "@/api/axios";
 import * as S from "@/components/chat/styled/Chat.styled";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 const ChatInfo = () => {
@@ -36,4 +36,4 @@ const ChatInfo = () => {
     )
 }
 
-export default ChatInfo;
+export default memo(ChatInfo);

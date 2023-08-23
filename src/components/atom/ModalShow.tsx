@@ -80,3 +80,18 @@ export const modalState = atom({
     key: "modalState",
     default: initModal,
 })
+
+export const contextMenuState = atom<boolean>({
+    key: "contextMenuState",
+    default: false,
+})
+
+export interface locate {
+    x: string,
+    y: string,
+}
+
+export const contextMenuLocate = atom<locate>({
+    key: "contextMenuLocate",
+    default: {x: "0", y: "0"},
+})

@@ -10,8 +10,8 @@ import { userState } from "@/components/atom/User";
 
 interface channelCreateDto {
     channelName: string,
-    chnnelDescription: string,
-    chnnelPassword: string,
+    channelDescription: string,
+    channelPassword: string,
 }
 
 const ChannelCreateModal = ({eventName}: modalProps) => {
@@ -42,8 +42,8 @@ const ChannelCreateModal = ({eventName}: modalProps) => {
 
         const channelCreateData: channelCreateDto = {
             channelName: name,
-            chnnelDescription: description,
-            chnnelPassword: password
+            channelDescription: description,
+            channelPassword: password
         }
         const formData = new FormData();
         Object.entries(channelCreateData).map(([k, v]) => {

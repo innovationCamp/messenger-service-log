@@ -1,20 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { logContentState, logType, logTypeConstant, modalState } from "@/components/atom/ModalShow"
 import * as S from "@/components/main/styled/Modal.styled";
 import { devInstance } from "@/api/axios";
 import { line } from "@/components/constant/constant";
 import { modalProps } from "../interface";
+import { stompInstance } from "@/api/stomp";
+import { jwtDecoded, msgType, sendMsgDto } from "@/components/chat/interface";
+import { userState } from "@/components/atom/User";
+import { Client } from "@stomp/stompjs";
 
 interface ChannelParticipantDto {
     channelPassword: string,
 }
 
-const ChannelParticipantModal = ({eventName}: modalProps) => {
+const ChannelParticipantModal = ({ eventName }: modalProps) => {
     const [modalShow, setModalShow] = useRecoilState(modalState);
     const [logContent, setLogContent] = useRecoilState(logContentState);
+    const [user, setUser] = useRecoilState<jwtDecoded>(userState);
     const [channelId, setChannelId] = useState("");
     const [password, setPassword] = useState("");
+    const [client, setClient] = useState<Client | null>(null);
 
     const closeModal = () => {
         setModalShow((state) => {
@@ -60,6 +66,23 @@ const ChannelParticipantModal = ({eventName}: modalProps) => {
                     content: `${JSON.stringify(res.data)}`,
                 })
                 setLogContent((v) => v.concat(logContentList));
+
+                let stomp = stompInstance();
+                const sendMsg: sendMsgDto = {
+                    type: msgType.ENTER,
+                    channelId: channelId,
+                    senderId: user.sub,
+                    senderName: user.nickname,
+                    message: "",
+                };
+
+                stomp.onConnect = (frame) => {
+                    stomp.publish({
+                        destination: `/pub/chat/message`,
+                        body: JSON.stringify(sendMsg),
+                    })
+                }
+                setClient(stomp);
             })
             .catch((e) => {
                 closeModal();
@@ -78,6 +101,16 @@ const ChannelParticipantModal = ({eventName}: modalProps) => {
     const handleOverlayClick = () => {
         closeModal();
     };
+
+    useEffect(() => {
+        console.log("stomp client useEffect");
+        if (client) {
+            client.activate();
+            setTimeout(() => {
+                client.deactivate();
+            }, 2000);
+        }
+    }, [client])
 
     return (
         <>
