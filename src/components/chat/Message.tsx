@@ -1,6 +1,7 @@
 import * as S from "@/components/chat/styled/Chat.styled";
 import { useEffect, memo } from "react";
 import { useRecoilState } from "recoil";
+import { contextMenuLocate, contextMenuState, locate } from "../atom/ModalShow";
 import { userState } from "../atom/User";
 import { jwtDecoded, responseMsgDto } from "./interface";
 
@@ -11,6 +12,8 @@ interface MessageProps {
 const Messege = ({ responseMsgArr }: MessageProps) => {
     console.log("Message 재실행 확인");
     const [user, setUser] = useRecoilState<jwtDecoded>(userState);
+    const [menuShow, setMenuShow] = useRecoilState<boolean>(contextMenuState);
+    const [menulocate, setMenuLocate] = useRecoilState<locate>(contextMenuLocate);
 
     useEffect(() => {
         console.log("Message 재렌더 확인");
@@ -19,6 +22,20 @@ const Messege = ({ responseMsgArr }: MessageProps) => {
     const ownerCheck = (msg: responseMsgDto, user: jwtDecoded): boolean => {
         if (msg.userId == user.sub && msg.userEmail === user.email && msg.userName === user.nickname) return true;
         return false;
+    }
+
+    const msgPClickHandler = (e: React.MouseEvent<HTMLParagraphElement>) => {
+
+    }
+
+    const msgPContextHandler = (e: React.MouseEvent<HTMLParagraphElement>) => {
+        //drop down될 context menu 만들기
+        e.preventDefault();
+        // console.log(e.target);
+        // console.log(e.currentTarget.id);
+        const { clientX, clientY } = e;
+        setMenuLocate({ x: clientX.toString(), y: clientY.toString() })
+        setMenuShow(true);
     }
 
     return (
@@ -39,7 +56,11 @@ const Messege = ({ responseMsgArr }: MessageProps) => {
                                     <S.MessageTime>
                                         {`${createAt.getHours().toString().padStart(2, "0")}:${createAt.getMinutes().toString().padStart(2, "0")}`}
                                     </S.MessageTime>
-                                    <S.MsgOwnerContentP>
+                                    <S.MsgOwnerContentP
+                                        onClick={msgPClickHandler}
+                                        onContextMenu={msgPContextHandler}
+                                        id={responesMsg.id.toString()}
+                                        >
                                         {responesMsg.text}
                                     </S.MsgOwnerContentP>
                                 </S.ContentPTime>
@@ -58,10 +79,16 @@ const Messege = ({ responseMsgArr }: MessageProps) => {
                             const createAt = new Date(responesMsg.createdAt);
                             return (
                                 <S.ContentPTime key={idx}>
-                                    <S.MsgContentP>
+                                    <S.MsgContentP
+                                        onClick={msgPClickHandler}
+                                        onContextMenu={msgPContextHandler}
+                                        id={responesMsg.id.toString()}
+                                    >
                                         {responesMsg.text}
                                     </S.MsgContentP>
-                                    <S.MessageTime>
+                                    <S.MessageTime
+                                        id={responesMsg.id.toString()}
+                                    >
                                         {`${createAt.getHours().toString().padStart(2, "0")}:${createAt.getMinutes().toString().padStart(2, "0")}`}
                                     </S.MessageTime>
                                 </S.ContentPTime>

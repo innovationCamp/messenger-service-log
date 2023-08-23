@@ -1,6 +1,6 @@
 import { devInstance } from "@/api/axios";
 import * as S from "@/components/chat/styled/Chat.styled";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { jwtDecoded, msgType, responseMsgDto, sendMsgDto } from "./interface";
 import Message from "./Message";
@@ -63,7 +63,7 @@ const Messeges = () => {
             let stomp = stompInstance();
             stomp.onConnect = (frame) => {
                 stomp.subscribe(`/sub/chat/room/${channelId}`, (message) => {
-                    console.log("###########", message.body);
+                    // console.log("###########", message.body);
                     const msg: responseMsgDto = JSON.parse(message.body);
                     setMsgArr((preMsgArr) => [...preMsgArr, msg])
                 });
@@ -78,7 +78,7 @@ const Messeges = () => {
 
         devInstance.get(`/channel-content/${searchParams.get("channelId")}`)
             .then((res) => {
-                // console.log(res.data);
+                // console.log("@@", res.data);
                 setMsgArr(res.data);
             })
             .catch((e) => {
@@ -90,6 +90,7 @@ const Messeges = () => {
         if (msgArr.length != 0) {
             const resArr: responseMsgDto[][] = [];
             let cacheArr: responseMsgDto[] = [];
+            if (msgArr.length == 1) resArr.push(msgArr);
             msgArr.reduce((acc, cur, idx) => {
                 if (cacheArr.length == 0) cacheArr = [acc];
                 if (acc.userId != cur.userId) {
@@ -102,7 +103,7 @@ const Messeges = () => {
                 }
                 return cur;
             });
-            // console.log(resArr);
+            // console.log("@@2", resArr);
             setReMsgArr(resArr);
         }
     }, [msgArr])
@@ -142,4 +143,4 @@ const Messeges = () => {
     )
 }
 
-export default Messeges;
+export default memo(Messeges);
