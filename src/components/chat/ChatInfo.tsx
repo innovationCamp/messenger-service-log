@@ -12,7 +12,7 @@ const ChatInfo = () => {
         console.log("@@@ : ChatInfo useEffect", searchParams.get("channelId"));
         devInstance.get(`/channel/${searchParams.get("channelId")}`)
             .then((res) => {
-                // console.log(res.data);
+                console.log(res.data);
                 setTitle(res.data.channelName);
                 setDescription(res.data.channelDescription);
             })

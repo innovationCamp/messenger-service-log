@@ -96,7 +96,7 @@ margin: 1em 0 0 0;
 
 export const MessageTime = styled(MsgContentP)`
 background-color: rgb(31, 28, 28);
-color: #535353;
+color: gray;
 border: none;
 padding: 20px 4px 0 4px;
 display: flex;

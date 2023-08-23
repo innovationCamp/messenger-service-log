@@ -35,11 +35,11 @@ const Messege = ({ responseMsgArr }: MessageProps) => {
                         {responseMsgArr.map((responesMsg, idx) => {
                             const createAt = new Date(responesMsg.createdAt);
                             return (
-                                <S.ContentPTime>
+                                <S.ContentPTime key={idx}>
                                     <S.MessageTime>
-                                        {`${createAt.getHours()}-${createAt.getMinutes()}`}
+                                        {`${createAt.getHours().toString().padStart(2, "0")}:${createAt.getMinutes().toString().padStart(2, "0")}`}
                                     </S.MessageTime>
-                                    <S.MsgOwnerContentP key={idx}>
+                                    <S.MsgOwnerContentP>
                                         {responesMsg.text}
                                     </S.MsgOwnerContentP>
                                 </S.ContentPTime>
@@ -57,12 +57,12 @@ const Messege = ({ responseMsgArr }: MessageProps) => {
                         {responseMsgArr.map((responesMsg, idx) => {
                             const createAt = new Date(responesMsg.createdAt);
                             return (
-                                <S.ContentPTime>
-                                    <S.MsgContentP key={idx}>
+                                <S.ContentPTime key={idx}>
+                                    <S.MsgContentP>
                                         {responesMsg.text}
                                     </S.MsgContentP>
                                     <S.MessageTime>
-                                        {`${createAt.getHours()}-${createAt.getMinutes()}`}
+                                        {`${createAt.getHours().toString().padStart(2, "0")}:${createAt.getMinutes().toString().padStart(2, "0")}`}
                                     </S.MessageTime>
                                 </S.ContentPTime>
                             )
