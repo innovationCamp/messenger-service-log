@@ -36,3 +36,14 @@ export interface sendMsgDto {
     senderName: string;
     message: string;
 }
+
+export interface msgInfo {
+    id: string,
+}
+
+export interface contextMenuInterface {
+    show: boolean,
+    x: string,
+    y: string,
+    msg: msgInfo,
+}

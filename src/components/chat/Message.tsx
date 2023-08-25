@@ -1,9 +1,10 @@
 import * as S from "@/components/chat/styled/Chat.styled";
-import { useEffect, memo } from "react";
+import { useEffect, memo, useCallback, useState } from "react";
 import { useRecoilState } from "recoil";
-import { contextMenuLocate, contextMenuState, locate } from "../atom/ModalShow";
 import { userState } from "../atom/User";
-import { jwtDecoded, responseMsgDto } from "./interface";
+import { contextMenuInterface, jwtDecoded, responseMsgDto } from "./interface";
+import ContextMenu from "@/components/chat/ContextMenu";
+import * as SMenu from "@/components/chat/styled/ContextMenu.styled";
 
 interface MessageProps {
     responseMsgArr: responseMsgDto[];
@@ -12,30 +13,42 @@ interface MessageProps {
 const Messege = ({ responseMsgArr }: MessageProps) => {
     console.log("Message 재실행 확인");
     const [user, setUser] = useRecoilState<jwtDecoded>(userState);
-    const [menuShow, setMenuShow] = useRecoilState<boolean>(contextMenuState);
-    const [menulocate, setMenuLocate] = useRecoilState<locate>(contextMenuLocate);
+    const [menuState, setMenuState] = useState<contextMenuInterface>(
+        { show: false, x: "0", y: "0", msg: { id: "0" } })
 
     useEffect(() => {
         console.log("Message 재렌더 확인");
     }, [])
 
     const ownerCheck = (msg: responseMsgDto, user: jwtDecoded): boolean => {
+        // console.log("ownerCheck func");
         if (msg.userId == user.sub && msg.userEmail === user.email && msg.userName === user.nickname) return true;
         return false;
     }
 
-    const msgPClickHandler = (e: React.MouseEvent<HTMLParagraphElement>) => {
+    // const msgPClickHandler = (e: React.MouseEvent<HTMLParagraphElement>) => {
 
-    }
+    // }
 
     const msgPContextHandler = (e: React.MouseEvent<HTMLParagraphElement>) => {
-        //drop down될 context menu 만들기
+        // console.log("msgPContextHandler func");
         e.preventDefault();
-        // console.log(e.target);
         // console.log(e.currentTarget.id);
         const { clientX, clientY } = e;
-        setMenuLocate({ x: clientX.toString(), y: clientY.toString() })
-        setMenuShow(true);
+        setMenuState({
+            show: true,
+            x: clientX.toString(),
+            y: clientY.toString(),
+            msg: { id: e.currentTarget.id },
+        })
+    }
+
+    const closeWrapperHandler = () => {
+        setMenuState((pre) => {
+            const nState = Object.assign(new Object(), pre);
+            nState.show = false;
+            return nState;
+        });
     }
 
     return (
@@ -57,10 +70,9 @@ const Messege = ({ responseMsgArr }: MessageProps) => {
                                         {`${createAt.getHours().toString().padStart(2, "0")}:${createAt.getMinutes().toString().padStart(2, "0")}`}
                                     </S.MessageTime>
                                     <S.MsgOwnerContentP
-                                        onClick={msgPClickHandler}
                                         onContextMenu={msgPContextHandler}
                                         id={responesMsg.id.toString()}
-                                        >
+                                    >
                                         {responesMsg.text}
                                     </S.MsgOwnerContentP>
                                 </S.ContentPTime>
@@ -80,7 +92,6 @@ const Messege = ({ responseMsgArr }: MessageProps) => {
                             return (
                                 <S.ContentPTime key={idx}>
                                     <S.MsgContentP
-                                        onClick={msgPClickHandler}
                                         onContextMenu={msgPContextHandler}
                                         id={responesMsg.id.toString()}
                                     >
@@ -96,6 +107,11 @@ const Messege = ({ responseMsgArr }: MessageProps) => {
                         })}
                     </S.MessageContent>
                 </S.Message>
+            }
+            {menuState.show &&
+                <SMenu.CloseWrapper onClick={closeWrapperHandler} >
+                    <ContextMenu x={menuState.x} y={menuState.y} />
+                </SMenu.CloseWrapper>
             }
         </>
     )
