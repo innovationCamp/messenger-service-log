@@ -1,4 +1,5 @@
 import * as S from "@/components/chat/styled/ContextMenu.styled";
+import { memo } from "react";
 
 interface contextMenuProps {
     x: string,
@@ -7,7 +8,11 @@ interface contextMenuProps {
 
 const ContextMenu = ({ x, y }: contextMenuProps) => {
     return (
-        <S.Wrapper x={x} y={y}>
+        <S.Wrapper
+            onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
+            x={x}
+            y={y}
+        >
             <S.Menu>
                 <S.Item>
                     <S.Span>reply</S.Span>
@@ -23,4 +28,4 @@ const ContextMenu = ({ x, y }: contextMenuProps) => {
     )
 }
 
-export default ContextMenu;
+export default memo(ContextMenu);
