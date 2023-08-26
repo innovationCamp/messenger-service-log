@@ -9,7 +9,7 @@ import { stompInstance } from "@/api/stomp";
 import { useRecoilState } from "recoil";
 import { userState } from "../atom/User";
 
-const Messeges = () => {
+const Messages = () => {
     console.log("Messeges 재실행 확인");
     const [searchParams, setSearchParams] = useSearchParams();
     const [user, setUser] = useRecoilState<jwtDecoded>(userState);
@@ -143,4 +143,4 @@ const Messeges = () => {
     )
 }
 
-export default memo(Messeges);
+export default memo(Messages);

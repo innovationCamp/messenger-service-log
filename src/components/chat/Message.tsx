@@ -62,8 +62,8 @@ const Messege = ({ responseMsgArr }: MessageProps) => {
                         </S.MsgOwnerInfoP>
                     </S.MessageInfo>
                     <S.MsgOwnerContent>
-                        {responseMsgArr.map((responesMsg, idx) => {
-                            const createAt = new Date(responesMsg.createdAt);
+                        {responseMsgArr.map((responseMsg, idx) => {
+                            const createAt = new Date(responseMsg.createdAt);
                             return (
                                 <S.ContentPTime key={idx}>
                                     <S.MessageTime>
@@ -71,9 +71,9 @@ const Messege = ({ responseMsgArr }: MessageProps) => {
                                     </S.MessageTime>
                                     <S.MsgOwnerContentP
                                         onContextMenu={msgPContextHandler}
-                                        id={responesMsg.id.toString()}
+                                        id={responseMsg.id.toString()}
                                     >
-                                        {responesMsg.text}
+                                        {responseMsg.text}
                                     </S.MsgOwnerContentP>
                                 </S.ContentPTime>
                             )
@@ -87,18 +87,17 @@ const Messege = ({ responseMsgArr }: MessageProps) => {
                         </S.MessageInfoP>
                     </S.MessageInfo>
                     <S.MessageContent>
-                        {responseMsgArr.map((responesMsg, idx) => {
-                            const createAt = new Date(responesMsg.createdAt);
+                        {responseMsgArr.map((responseMsg, idx) => {
+                            const createAt = new Date(responseMsg.createdAt);
                             return (
                                 <S.ContentPTime key={idx}>
                                     <S.MsgContentP
                                         onContextMenu={msgPContextHandler}
-                                        id={responesMsg.id.toString()}
+                                        id={responseMsg.id.toString()}
                                     >
-                                        {responesMsg.text}
+                                        {responseMsg.text}
                                     </S.MsgContentP>
                                     <S.MessageTime
-                                        id={responesMsg.id.toString()}
                                     >
                                         {`${createAt.getHours().toString().padStart(2, "0")}:${createAt.getMinutes().toString().padStart(2, "0")}`}
                                     </S.MessageTime>
