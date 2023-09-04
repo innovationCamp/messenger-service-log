@@ -3,7 +3,7 @@ import { Client } from '@stomp/stompjs';
 
 const stompInstance = (): Client => {
     const client = new Client({
-        brokerURL: "ws://localhost:8080/ws-stomp",
+        brokerURL: `${process.env.STOMP_BROKER}',
         connectHeaders: {
             login: 'user',
             passcode: 'password',
