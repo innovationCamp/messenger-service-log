@@ -3,7 +3,7 @@ import { Client } from '@stomp/stompjs';
 
 const stompInstance = (): Client => {
     const client = new Client({
-        brokerURL: `${process.env.STOMP_BROKER}',
+        brokerURL: process.env.STOMP_BROKER,
         connectHeaders: {
             login: 'user',
             passcode: 'password',
